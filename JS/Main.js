@@ -3,6 +3,7 @@ import { StyleSheet, Text, View,SafeAreaView  } from 'react-native'
 import { GlobalProvider } from './GlobalContext'; 
 import LoadingScreen from './Components/LoadingPage';
 import TabPage from './Components/TabPage';
+
 const Main = () => {
     const [isLoading, setIsLoading] = useState(true);
 
