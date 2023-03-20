@@ -1,14 +1,11 @@
-
+import { UContact } from "./UContact";
 const DecodeQR = (data) => {
-
+    console.log(data)
     function isURL(content) {
         const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
         return urlRegex.test(content);
     }
-    function isEmailAddress(content) {
-        const emailRegex = /\S+@\S+\.\S+/;
-        return emailRegex.test(content);
-    }
+    
     function isVCard(content) {
         const vcardRegex = /^BEGIN:VCARD/;
         return vcardRegex.test(content);
@@ -19,6 +16,10 @@ const DecodeQR = (data) => {
     }
     function isEmail(content) {
         const emailRegex = /^mailto:/;
+        return emailRegex.test(content);
+    }
+    function isEmailAddress(content) {
+        const emailRegex = /\S+@\S+\.\S+/;
         return emailRegex.test(content);
     }
     function isSms(content) {
@@ -34,9 +35,10 @@ const DecodeQR = (data) => {
         return eventRegex.test(content);
     }
     if (isURL(data)) return "URL";
-    if (isEmailAddress(data)) return "EMAILADDRESS";
+   
     if (isVCard(data)) return "VCARD";
     if (isEmail(data)) return "EMAILTO";
+    if (isEmailAddress(data)) return "EMAILADDRESS";
     if (isWifi(data)) return "WIFI";
     if (isSms(data)) return "SMSTO";
     if (isLocation(data)) return "LOCATION";
@@ -48,15 +50,15 @@ const GetIcon = (data) => {
     var iconName="";
     switch (data) {
         case "URL": iconName="earth-outline"
-            break;
-        case "EMAILADDRESS":
-            iconName="mail-outline"
-            break;
+            break;        
         case "VCARD":
             iconName="card-outline"
             break;
         case "EMAILTO":
             iconName="send-outline"
+            break;
+        case "EMAILADDRESS":
+            iconName="mail-outline"
             break;
         case "WIFI":
             iconName="wifi-outline"
@@ -77,13 +79,45 @@ const GetIcon = (data) => {
     return(iconName)
 }
 const GetText = (data) => {
-    //const qrCode = jsQR.decodeQR(data);
-
-    //console.log(qrCode);
-
-    var returnText="";
-    
+    var returnText=""; 
+    switch (DecodeQR(data)) {
+        case "URL":             
+            returnText="Open "+data
+            break;
+        case "EMAILADDRESS":
+            returnText="Add to Contact"
+            break;
+        case "VCARD":
+            var vcard=UContact.vcardToJSON(data)      
+            returnText="Add "+vcard.fullName+" to Contact"
+            break;
+        case "EMAILTO":
+            returnText="Send Mail"
+            break;
+        case "WIFI":
+            returnText="Join Wifi" 
+            break;
+        case "SMSTO":
+            returnText="SMSTO"
+            break;
+        case "LOCATION":
+            returnText="Open Map" 
+            break;
+        case "EVENT":
+            returnText="add Event to Calendar"
+            break;
+        default:
+            returnText="Search " +data
+            break;
+    }
     return(returnText)
 }
 
-export { DecodeQR,GetIcon,GetText }
+const isUndefined =(object)=>
+{
+    if(object==undefined)
+    return true;
+    return false
+}
+
+export { DecodeQR,GetIcon,GetText,isUndefined }

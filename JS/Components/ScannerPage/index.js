@@ -4,44 +4,50 @@ import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import DeprecatedViewPropTypes from 'deprecated-react-native-prop-types';
 import { GlobalContext } from '../../GlobalContext';
-import QRCodeScanner from 'react-native-qrcode-scanner';
 
 import { RNCamera } from 'react-native-camera';
 import { QrcodeMark } from '../SupportComponent/QrcodeMark';
 const ScannerPage = () => {
     const [QRPostion, set_QRPostion] = useState(null);
+    const [Scanned, set_Scanned] = useState(true);
+    const [timeout, set_Timeout] = useState(null);
+    const [barcodeDetected, set_barcodeDetected] = useState(false);
 
-    let scanner;
     onSuccess = ({ barcodes }) => {
-         
-        set_QRPostion(barcodes)
-        console.log(barcodes)
+        if (barcodes != null && barcodes.length > 0) {
+            set_QRPostion(barcodes)
+            set_barcodeDetected(true)
+            if (timeout != null) { clearTimeout(timeout) }
+            set_Timeout(setTimeout(() => handleTimeout(), 10));
+        }
+
 
     };
-   
+
+    const handleTimeout = () => {
+        set_barcodeDetected(false)
+
+    };
 
 
     return (
         <View style={styles.container}>
-            <RNCamera ref={(camera) => scanner = camera}
-                onGoogleVisionBarcodesDetected={onSuccess}
+            <RNCamera
+                onGoogleVisionBarcodesDetected={Scanned ? onSuccess : null}
                 style={styles.preview}
             >
-            <QrcodeMark QRPostion={QRPostion}></QrcodeMark>
+                {barcodeDetected ? <QrcodeMark QRPostion={QRPostion}></QrcodeMark> : null}
             </RNCamera>
-            
+
         </View>
     );
 }
-ScannerPage.propTypes = {
-    styles: DeprecatedViewPropTypes.style,
-};
+
 export default ScannerPage;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
         backgroundColor: 'black',
     },
     preview: {
@@ -59,5 +65,14 @@ const styles = StyleSheet.create({
     },
     buttonTouchable: {
         padding: 16
-    }
+    },
+    capture: {
+        flex: 0,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        padding: 15,
+        paddingHorizontal: 20,
+        alignSelf: 'center',
+        margin: 20,
+    },
 });
