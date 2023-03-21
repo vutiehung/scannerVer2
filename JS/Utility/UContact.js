@@ -20,8 +20,6 @@ const UContact = {
                 if (index1 > -1) {
                     subtype = key.substr(index1 + 1);
                     key = key.substr(0, index1)
-
-
                 }
                 var value = line.substr(index + 1);
                 if (key === "VERSION") {

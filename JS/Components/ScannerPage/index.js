@@ -18,18 +18,13 @@ const ScannerPage = () => {
             set_QRPostion(barcodes)
             set_barcodeDetected(true)
             if (timeout != null) { clearTimeout(timeout) }
-            set_Timeout(setTimeout(() => handleTimeout(), 10));
+            set_Timeout(setTimeout(() => handleTimeout(), 100));
         }
-
-
     };
-
     const handleTimeout = () => {
         set_barcodeDetected(false)
 
     };
-
-
     return (
         <View style={styles.container}>
             <RNCamera
@@ -76,3 +71,4 @@ const styles = StyleSheet.create({
         margin: 20,
     },
 });
+ 

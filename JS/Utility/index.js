@@ -1,6 +1,10 @@
 import { UContact } from "./UContact";
+import { USms } from "./USms";
+import { UEmail } from "./UEmail";
+import { UWifi } from "./UWifi";
+import { UEvent } from "./UEvent";
 const DecodeQR = (data) => {
-    console.log(data)
+    
     function isURL(content) {
         const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
         return urlRegex.test(content);
@@ -15,13 +19,10 @@ const DecodeQR = (data) => {
         return wifiRegex.test(content);
     }
     function isEmail(content) {
-        const emailRegex = /^mailto:/;
+        const emailRegex = /^MATMSG:TO/;
         return emailRegex.test(content);
     }
-    function isEmailAddress(content) {
-        const emailRegex = /\S+@\S+\.\S+/;
-        return emailRegex.test(content);
-    }
+    
     function isSms(content) {
         const smsRegex = /^SMSTO:/;
         return smsRegex.test(content);
@@ -38,10 +39,9 @@ const DecodeQR = (data) => {
    
     if (isVCard(data)) return "VCARD";
     if (isEmail(data)) return "EMAILTO";
-    if (isEmailAddress(data)) return "EMAILADDRESS";
+
     if (isWifi(data)) return "WIFI";
     if (isSms(data)) return "SMSTO";
-    if (isLocation(data)) return "LOCATION";
     if (isEvent(data)) return "EVENT";
     return null;
 }
@@ -56,18 +56,12 @@ const GetIcon = (data) => {
             break;
         case "EMAILTO":
             iconName="send-outline"
-            break;
-        case "EMAILADDRESS":
-            iconName="mail-outline"
-            break;
+            break;    
         case "WIFI":
             iconName="wifi-outline"
             break;
         case "SMSTO":
             iconName="chatbubbles-outline"
-            break;
-        case "LOCATION":
-            iconName="location-outline"
             break;
         case "EVENT":
             iconName="calendar-outline"
@@ -84,30 +78,29 @@ const GetText = (data) => {
         case "URL":             
             returnText="Open "+data
             break;
-        case "EMAILADDRESS":
-            returnText="Add to Contact"
-            break;
         case "VCARD":
             var vcard=UContact.vcardToJSON(data)      
             returnText="Add "+vcard.fullName+" to Contact"
             break;
         case "EMAILTO":
-            returnText="Send Mail"
-            break;
+            var emailto = UEmail.ConvertQRData2Json(data)
+            returnText="Send Mail "+emailto.Email
+            break; 
         case "WIFI":
-            returnText="Join Wifi" 
+            var wifi=UWifi.ConvertQRData2Json(data)
+            returnText="Join Wifi " +wifi.SSID
             break;
         case "SMSTO":
-            returnText="SMSTO"
-            break;
-        case "LOCATION":
-            returnText="Open Map" 
-            break;
+            // var sms=USms.ConvertQRData2Json(data)      
+             returnText="SMSTO"
+            break;       
         case "EVENT":
-            returnText="add Event to Calendar"
+            var event=UEvent.ConvertQRData2Json(data)  
+            returnText="add "+event.title+" to Calendar"
             break;
         default:
             returnText="Search " +data
+
             break;
     }
     return(returnText)

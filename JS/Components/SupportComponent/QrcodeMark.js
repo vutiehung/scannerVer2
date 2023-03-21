@@ -5,6 +5,10 @@ import { DecodeQR, GetIcon, GetText, isUndefined } from '../../Utility'
 import { UContact } from '../../Utility/UContact';
 import Contacts from 'react-native-contacts';
 import { USms } from '../../Utility/USms';
+import { UEmail } from '../../Utility/UEmail';
+import { UWifi } from '../../Utility/UWifi';
+import { UEvent } from '../../Utility/UEvent';
+import WifiManager from 'react-native-wifi-reborn';
 const QrcodeMark = (Props) => {
     var value = Props.QRPostion
     var data = "";
@@ -21,51 +25,61 @@ const QrcodeMark = (Props) => {
         width = Props.QRPostion[0].bounds.size.width;
     }
 
-    const QrResultPress = () => {
+    const QrResultPress = () => {      
         switch (DecodeQR(data)) {
             case "URL":
-                openLink(data)
-                break;
-            case "EMAILADDRESS":
-
+                onOpenLink(data)
                 break;
             case "VCARD":
                 var vcardJson = UContact.vcardToJSON(data);
-                var contact = UContact.jsonToAndroidContact(vcardJson)
-                Contacts.openContactForm(contact).then((contact) => {
-                    console.log('Form submitted successfully');
-                    console.log(contact)
-                })
-                    .catch((error) => {
-                        console.log('An error occurred:', error);
-                    });
+                onAddContact(vcardJson)
                 break;
             case "EMAILTO":
-                console.log("EMAILTO")
-                console.log(data)
+                var emailto = UEmail.ConvertQRData2Json(data)
+                onSendEmail(emailto.Email, emailto.Sub, emailto.Content)
                 break;
             case "WIFI":
-
+                var wifi = UWifi.ConvertQRData2Json(data)
+                onWifiJoin(wifi.SSID, wifi.Password, wifi.Type)
                 break;
             case "SMSTO":
                 var smsvalue = USms.ConvertQRData2Json(data)
                 onSendSMSMessage(smsvalue.Phone, smsvalue.Content)
-                break;
-            case "LOCATION":
-
-                break;
+                break;      
             case "EVENT":
-
+                var event=UEvent.ConvertQRData2Json(data)               
                 break;
             default:
-
+                onOpenLink("https://www.amazon.com/s?k="+data)
                 break;
         }
-
-
     }
 
+    const onWifiJoin = async (ssid, password, type) => {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+                title: 'Location permission is required for WiFi connections',
+                message:
+                    'This app needs location permission as this is required  ' +
+                    'to scan for wifi networks.',
+                buttonNegative: 'DENY',
+                buttonPositive: 'ALLOW',
+            },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            WifiManager.connectToProtectedSSID(ssid, password, (type == "WEP" ? true : false))
+                .then(() => {
+                    console.log('Connected to wifi:', ssid);
+                })
+                .catch((error) => {
+                    console.log('Error connecting to wifi:', error);
+                });
+        } else {
+            console.log('Permission denied');
+        }
 
+    }
     const onSendEmail = (toMailId, subject, body) => {
         if (!isUndefined(toMailId)) {
             let link = `mailto:${toMailId}`;
@@ -98,26 +112,35 @@ const QrcodeMark = (Props) => {
     }
 
 
-    const openLink = async (url) => {
+    const onOpenLink = async (url) => {
         const supported = await Linking.canOpenURL(url);
         if (supported) {
-            // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-            // by some browser in the mobile
             await Linking.openURL(url);
         } else {
             Alert.alert(`Don't know how to open this URL: ${url}`);
         }
     }
 
+    const onAddContact=(vcardJson)=>{
+        var contact = UContact.jsonToAndroidContact(vcardJson)
+        Contacts.openContactForm(contact).then((contact) => {
+            console.log('Form submitted successfully');
+            console.log(contact)
+        })
+            .catch((error) => {
+                console.log('An error occurred:', error);
+            });
+    }
+
     const contentProcess = () => {
         return (<Button type="clear" style={{ flexDirection: 'row', alignItems: 'center' }} onPress={QrResultPress} >
             <Icon
                 name={GetIcon(DecodeQR(data))}
-                size={15}
+                size={12}
                 type='ionicon'
                 color='#000'
             />
-            <Text style={{ marginLeft: 5 }}>{GetText(data)} </Text>
+            <Text style={{ marginLeft: 5,fontSize:12 }}>{GetText(data)} </Text>
         </Button>)
     }
 
