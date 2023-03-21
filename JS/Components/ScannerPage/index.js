@@ -18,7 +18,7 @@ const ScannerPage = () => {
             set_QRPostion(barcodes)
             set_barcodeDetected(true)
             if (timeout != null) { clearTimeout(timeout) }
-            set_Timeout(setTimeout(() => handleTimeout(), 100));
+             set_Timeout(setTimeout(() => handleTimeout(), 1000));
         }
     };
     const handleTimeout = () => {

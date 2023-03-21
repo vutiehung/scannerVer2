@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Text, View, StyleSheet, Alert, PermissionsAndroid, Linking, Platform } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import { DecodeQR, GetIcon, GetText, isUndefined } from '../../Utility'
@@ -10,6 +10,7 @@ import { UWifi } from '../../Utility/UWifi';
 import { UEvent } from '../../Utility/UEvent';
 import WifiManager from 'react-native-wifi-reborn';
 const QrcodeMark = (Props) => {
+    const [ButtonWidth, set_ButtonWidth] = useState(0);
     var value = Props.QRPostion
     var data = "";
     var Otop = 0;
@@ -132,15 +133,21 @@ const QrcodeMark = (Props) => {
             });
     }
 
+    const getLayout=(event) => {
+        var widthButton=event.nativeEvent.layout.width
+        set_ButtonWidth((width-widthButton)/2) 
+      
+      }
+
     const contentProcess = () => {
-        return (<Button type="clear" style={{ flexDirection: 'row', alignItems: 'center' }} onPress={QrResultPress} >
+        return (<Button type="clear" style={{ flexDirection: 'row', alignItems: 'center' }} onPress={QrResultPress}  onLayout={getLayout}>
             <Icon
                 name={GetIcon(DecodeQR(data))}
                 size={12}
                 type='ionicon'
                 color='#000'
             />
-            <Text style={{ marginLeft: 5,fontSize:12 }}>{GetText(data)} </Text>
+            <Text style={{ marginLeft: 5,fontSize:12 }}>{GetText(data)}  </Text>
         </Button>)
     }
 
@@ -158,7 +165,7 @@ const QrcodeMark = (Props) => {
 
             <View style={{ ...styles.mask_n, top: height, left: width - 20 }} />
             <View style={{ ...styles.mask_n, ...styles.mask_d, top: height - 10, left: width - 10 }} />
-            <View style={{ top: height + 10, flex: 1, alignItems: 'center', position: 'absolute', }}>
+            <View style={{ top: height + 10 ,left:ButtonWidth, flex: 1, alignItems: 'center', position: 'absolute', }}>
                 <View style={{ ...styles.text_qrResult }}>
                     {contentProcess()}
                 </View>
@@ -190,7 +197,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         backgroundColor: "yellow",
-        padding: 7,
-        borderRadius: 10,
+        padding: 3,
+        borderRadius: 15,
     }
 });

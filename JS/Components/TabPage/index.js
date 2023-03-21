@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { View, Text,StyleSheet } from 'react-native';
 import { Icon } from '@rneui/themed'
 import ScannerPage from '../ScannerPage';
+import QRCodePage from '../QRCodePage';
 const Tab = createBottomTabNavigator();
 function EmptyScreen() {
     return (
@@ -17,17 +18,14 @@ const TabPage = () => {
     return (
         <NavigationContainer>
             <Tab.Navigator  initialRouteName="Scanner" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
-                <Tab.Screen name="QR Code" component={EmptyScreen} options={{ tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
+                <Tab.Screen name="QR Code" component={QRCodePage} options={{ tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="History" component={EmptyScreen} options={{ tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="Scanner" component={ScannerPage} options={{
                     tabBarLabel: "", tabBarIcon: ({focused}) => (
                         <View style={styles.Tab_BigButton }>
                             <Icon name='barcode-outline' style={{ left: 2 }} type='ionicon' size={55} color={focused ? '#fff' :'#bfbbb0'  }    />
                         </View>
-
-
-                    ),
-                   
+                    ),                   
                 }} />
                 <Tab.Screen name="Setting" component={EmptyScreen} options={{ tabBarIcon: ({ focused}) => (<Icon name='cog' type='font-awesome' color={focused ? '#5a95ff': 'gray'  }  />) }} />
                 <Tab.Screen name="More" component={EmptyScreen} options={{ tabBarIcon: ({ focused }) => (<Icon name='ellipsis-horizontal-outline' type='ionicon' color={focused ?'#5a95ff': 'gray'  }  />) }} />
@@ -35,10 +33,7 @@ const TabPage = () => {
         </NavigationContainer>
     );
 }
-
 export default TabPage;
-
-
 const styles = StyleSheet.create({
     Tab_BigButton: {
         position: 'absolute',
