@@ -91,16 +91,15 @@ const GetText = (data) => {
             returnText="Join Wifi " +wifi.SSID
             break;
         case "SMSTO":
-            // var sms=USms.ConvertQRData2Json(data)      
-             returnText="SMSTO"
+            var sms=USms.ConvertQRData2Json(data)      
+            returnText="SMSTO "+sms.Phone
             break;       
         case "EVENT":
             var event=UEvent.ConvertQRData2Json(data)  
             returnText="add "+event.title+" to Calendar"
             break;
         default:
-            returnText="Search " +data
-
+            returnText="Search " +data            
             break;
     }
     return(returnText)
