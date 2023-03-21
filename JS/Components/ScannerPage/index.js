@@ -8,10 +8,12 @@ import { GlobalContext } from '../../GlobalContext';
 import { RNCamera } from 'react-native-camera';
 import { QrcodeMark } from '../SupportComponent/QrcodeMark';
 const ScannerPage = () => {
+
     const [QRPostion, set_QRPostion] = useState(null);
     const [Scanned, set_Scanned] = useState(true);
     const [timeout, set_Timeout] = useState(null);
     const [barcodeDetected, set_barcodeDetected] = useState(false);
+
 
     onSuccess = ({ barcodes }) => {
         if (barcodes != null && barcodes.length > 0) {

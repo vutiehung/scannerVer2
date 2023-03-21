@@ -55,7 +55,7 @@ const GetIcon = (data) => {
             iconName = "card-outline"
             break;
         case "EMAILTO":
-            iconName = "send-outline"
+            iconName = "paper-plane-outline"
             break;
         case "WIFI":
             iconName = "wifi-outline"
@@ -80,7 +80,7 @@ const GetText = (data) => {
             break;
         case "VCARD":
             var vcard = UContact.vcardToJSON(data)
-            returnText = "Add " + vcard.fullName + " to Contact"
+            returnText = "Add '" + vcard.fullName + "' to Contact"
             break;
         case "EMAILTO":
             var emailto = UEmail.ConvertQRData2Json(data)
@@ -88,7 +88,7 @@ const GetText = (data) => {
             break;
         case "WIFI":
             var wifi = UWifi.ConvertQRData2Json(data)
-            returnText = "Join Wifi " + wifi.SSID
+            returnText = "Join '" + wifi.SSID +"' network"
             break;
         case "SMSTO":
             var sms = USms.ConvertQRData2Json(data)
@@ -96,7 +96,7 @@ const GetText = (data) => {
             break;
         case "EVENT":
             var event = UEvent.ConvertQRData2Json(data)
-            returnText = "add " + event.title + " to Calendar"
+            returnText = "add '" + event.title + "' to Calendar"
             break;
         default:
             returnText = "Search " + data
@@ -105,10 +105,45 @@ const GetText = (data) => {
     return (returnText)
 }
 
+
+const GetTextToHistory =(data) => {
+    var returnText = "";
+    switch (DecodeQR(data)) {
+        case "URL":
+            returnText =  data
+            break;
+        case "VCARD":
+            var vcard = UContact.vcardToJSON(data)
+            returnText =  vcard.fullName 
+            break;
+        case "EMAILTO":
+            var emailto = UEmail.ConvertQRData2Json(data)
+            returnText = "Send Mail to " +emailto.Email
+            break;
+        case "WIFI":
+            var wifi = UWifi.ConvertQRData2Json(data)
+            returnText = "Wifi " + wifi.SSID
+            break;
+        case "SMSTO":
+            var sms = USms.ConvertQRData2Json(data)
+            returnText = "SMSTO " + sms.Phone
+            break;
+        case "EVENT":
+            var event = UEvent.ConvertQRData2Json(data)
+            returnText = "Event " + event.title 
+            break;
+        default:
+            returnText = data
+            break;
+    }
+    return (returnText)
+}
+
+
 const isUndefined = (object) => {
     if (object == undefined)
         return true;
     return false
 }
 
-export { DecodeQR, GetIcon, GetText, isUndefined }
+export { DecodeQR, GetIcon, GetText, isUndefined ,GetTextToHistory}

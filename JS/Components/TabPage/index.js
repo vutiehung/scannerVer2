@@ -5,6 +5,7 @@ import { View, Text,StyleSheet } from 'react-native';
 import { Icon } from '@rneui/themed'
 import ScannerPage from '../ScannerPage';
 import QRCodePage from '../QRCodePage';
+import HistoryPage from '../HistoryPage';
 const Tab = createBottomTabNavigator();
 function EmptyScreen() {
     return (
@@ -13,13 +14,12 @@ function EmptyScreen() {
       </View>
     );
   }
-const TabPage = () => {
-     
+const TabPage = () => {     
     return (
         <NavigationContainer>
             <Tab.Navigator  initialRouteName="Scanner" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
                 <Tab.Screen name="QR Code" component={QRCodePage} options={{ tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
-                <Tab.Screen name="History" component={EmptyScreen} options={{ tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
+                <Tab.Screen name="HistoryMain" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="Scanner" component={ScannerPage} options={{
                     tabBarLabel: "", tabBarIcon: ({focused}) => (
                         <View style={styles.Tab_BigButton }>

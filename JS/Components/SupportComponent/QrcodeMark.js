@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import { Text, View, StyleSheet, Alert, PermissionsAndroid, Linking, Platform } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import { DecodeQR, GetIcon, GetText, isUndefined } from '../../Utility'
@@ -9,7 +9,11 @@ import { UEmail } from '../../Utility/UEmail';
 import { UWifi } from '../../Utility/UWifi';
 import { UEvent } from '../../Utility/UEvent';
 import WifiManager from 'react-native-wifi-reborn';
+import { GlobalContext } from '../../GlobalContext';
 const QrcodeMark = (Props) => {
+    const {
+        data_his,saveData
+    } = useContext(GlobalContext);
     const [ButtonWidth, set_ButtonWidth] = useState(0);
     var value = Props.QRPostion
     var data = "";
@@ -26,7 +30,10 @@ const QrcodeMark = (Props) => {
         width = Props.QRPostion[0].bounds.size.width;
     }
 
-    const QrResultPress = () => {      
+    const QrResultPress = () => {    
+        var x=[{'data': data },...data_his ]
+        saveData(x)
+        console.log(data)
         switch (DecodeQR(data)) {
             case "URL":
                 onOpenLink(data)
