@@ -6,6 +6,7 @@ import { Icon } from '@rneui/themed'
 import ScannerPage from '../ScannerPage';
 import QRCodePage from '../QRCodePage';
 import HistoryPage from '../HistoryPage';
+import ShareWifiPage from '../ShareWifiPage';
 const Tab = createBottomTabNavigator();
 function EmptyScreen() {
     return (
@@ -27,7 +28,7 @@ const TabPage = () => {
                         </View>
                     ),                   
                 }} />
-                <Tab.Screen name="Setting" component={EmptyScreen} options={{ tabBarIcon: ({ focused}) => (<Icon name='cog' type='font-awesome' color={focused ? '#5a95ff': 'gray'  }  />) }} />
+                <Tab.Screen name="ShareWifi" component={ShareWifiPage} options={{ tabBarIcon: ({ focused}) => (<Icon name='cog' type='font-awesome' color={focused ? '#5a95ff': 'gray'  }  />) }} />
                 <Tab.Screen name="More" component={EmptyScreen} options={{ tabBarIcon: ({ focused }) => (<Icon name='ellipsis-horizontal-outline' type='ionicon' color={focused ?'#5a95ff': 'gray'  }  />) }} />
             </Tab.Navigator>
         </NavigationContainer>
