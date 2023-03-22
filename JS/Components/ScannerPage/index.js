@@ -3,12 +3,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import DeprecatedViewPropTypes from 'deprecated-react-native-prop-types';
-import { GlobalContext } from '../../GlobalContext';
+import { GlobalContext } from '../../GlobalContext'; 
 
 import { RNCamera } from 'react-native-camera';
 import { QrcodeMark } from '../SupportComponent/QrcodeMark';
 const ScannerPage = () => {
-
+    
     const [QRPostion, set_QRPostion] = useState(null);
     const [Scanned, set_Scanned] = useState(true);
     const [timeout, set_Timeout] = useState(null);
@@ -30,6 +30,7 @@ const ScannerPage = () => {
     return (
         <View style={styles.container}>
             <RNCamera
+                
                 onGoogleVisionBarcodesDetected={Scanned ? onSuccess : null}
                 style={styles.preview}
             >

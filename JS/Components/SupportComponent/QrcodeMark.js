@@ -26,8 +26,8 @@ const QrcodeMark = (Props) => {
         data = Props.QRPostion[0].dataRaw;
         Otop = Props.QRPostion[0].bounds.origin.y;
         Oleft = Props.QRPostion[0].bounds.origin.x;
-        height = Props.QRPostion[0].bounds.size.height
-        width = Props.QRPostion[0].bounds.size.width;
+        height = Props.QRPostion[0].bounds.size.height*1,2;
+        width = Props.QRPostion[0].bounds.size.width*1,2;
     }
 
     const QrResultPress = () => {    

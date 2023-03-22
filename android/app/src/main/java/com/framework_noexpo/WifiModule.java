@@ -11,7 +11,7 @@ import com.facebook.react.bridge.ReactMethod;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Base64;
 public class WifiModule extends ReactContextBaseJavaModule {
   private WifiManager wifiManager;
 
@@ -29,13 +29,9 @@ public class WifiModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void getWifiList(Callback callback) {
     List<WifiConfiguration> wifiConfigurations = wifiManager.getConfiguredNetworks();
-    ArrayList<String> wifiList = new ArrayList<String>();
+    String wifiList = "";
 
-    if (wifiConfigurations != null) {
-      for (WifiConfiguration wifiConfiguration : wifiConfigurations) { 
-        wifiList.add(wifiConfiguration.SSID + "|" + wifiConfiguration.preSharedKey);
-      }
-    }
+     
 
     callback.invoke(wifiList);
   }
