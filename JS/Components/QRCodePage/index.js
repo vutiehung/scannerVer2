@@ -4,6 +4,8 @@ import QRCode from 'react-native-qrcode-svg';
 import { Icon } from '@rneui/themed';
 import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
+import { Text } from '@rneui/base';
+import { GetText, GetTextToHistory } from '../../Utility';
 const QRCodePage = ({ route, navigation }) => {
   const [value, setValue] = useState("ádfadsf");
   const viewShotRef = useRef();
@@ -39,11 +41,15 @@ const QRCodePage = ({ route, navigation }) => {
   }, [route.params?.data]);
 
   return (
-    <ViewShot ref={viewShotRef} options={{ format: 'png' }}>
-      <QRCode style={styles.container} size={300}
-        value={value} />
-    </ViewShot>
-
+    <View style={styles.container}>
+      <View style={{ borderColor: "#000000", borderWidth: 10, borderRadius:6}}>
+        <ViewShot ref={viewShotRef} options={{ format: 'png' }} style={{ height: 300, width: 300 }}>
+          <QRCode style={styles.container} size={300}
+            value={value} />
+        </ViewShot>
+      </View>
+      <Text style={{ paddingTop: 10 }}>{GetTextToHistory(value)}</Text>
+    </View>
   );
 };
 
@@ -51,6 +57,7 @@ const QRCodePage = ({ route, navigation }) => {
 export default QRCodePage;
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1, justifyContent: 'center', alignItems: 'center',
+
   },
 });

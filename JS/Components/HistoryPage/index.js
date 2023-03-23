@@ -5,7 +5,7 @@ import { ListItem, Avatar,Icon } from '@rneui/themed';
 import { DecodeQR, GetIcon, GetText, GetTextToHistory } from '../../Utility'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import QRCodePage from '../QRCodePage';
+import QRCodePage from '../QRCodePage/index';
 const HistoryPage = ({ navigaton }) => {
     const {
         data_his

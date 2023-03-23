@@ -7,6 +7,7 @@ import ScannerPage from '../ScannerPage';
 import QRCodePage from '../QRCodePage';
 import HistoryPage from '../HistoryPage';
 import ShareWifiPage from '../ShareWifiPage';
+import CreateQR from '../QRCodePage/CreateQR';
 const Tab = createBottomTabNavigator();
 function EmptyScreen() {
     return (
@@ -18,8 +19,8 @@ function EmptyScreen() {
 const TabPage = () => {     
     return (
         <NavigationContainer>
-            <Tab.Navigator  initialRouteName="Scanner" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
-                <Tab.Screen name="QR Code" component={QRCodePage} options={{ tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
+            <Tab.Navigator  initialRouteName="QR Code" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
+                <Tab.Screen name="QR Code" component={CreateQR} options={{ tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="HistoryMain" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="Scanner" component={ScannerPage} options={{
                     tabBarLabel: "", tabBarIcon: ({focused}) => (
@@ -53,5 +54,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
         elevation: 9,
-    },
+    }, container: {
+        flex: 1,
+      }
   });

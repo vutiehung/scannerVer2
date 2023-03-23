@@ -8,6 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
+    "react-devtools": "adb reverse tcp:8097 tcp:8097",
     "clean-android": "cd android && rm -R .gradle && cd app && rm -R build"
   },
   "dependencies": {
