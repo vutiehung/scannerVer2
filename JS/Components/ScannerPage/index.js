@@ -17,6 +17,7 @@ const ScannerPage = () => {
 
     onSuccess = ({ barcodes }) => {
         if (barcodes != null && barcodes.length > 0) {
+            console.log(barcodes.dataRaw)            
             set_QRPostion(barcodes)
             set_barcodeDetected(true)
             if (timeout != null) { clearTimeout(timeout) }

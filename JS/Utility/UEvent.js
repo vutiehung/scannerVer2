@@ -34,7 +34,20 @@ const UEvent = {
             location: location,
         };       
         return event;
-    }
+    },
+    CreatedataQRData:(Event,Description,Start,End,Location)=>{
+
+        var value='BEGIN:VEVENT'
+        value+='\nSUMMARY:'+Event
+        value+='\nDESCRIPTION:'+Description
+        value+='\nLOCATION:'+Location
+        value+='\nDTSTART:'+Start
+        value+='\nDTEND:'+End
+        value+='\nEND:VEVENT'
+
+
+        return value
+      }
 }
 
 export { UEvent };

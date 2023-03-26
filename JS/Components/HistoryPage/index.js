@@ -3,8 +3,7 @@ import { ScrollView, FlatList, StyleSheet, Text, View,Button } from 'react-nativ
 import { GlobalContext } from '../../GlobalContext';
 import { ListItem, Avatar,Icon } from '@rneui/themed';
 import { DecodeQR, GetIcon, GetText, GetTextToHistory } from '../../Utility'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'; 
 import QRCodePage from '../QRCodePage/index';
 const HistoryPage = ({ navigaton }) => {
     const {
@@ -25,7 +24,8 @@ const HistoryPage = ({ navigaton }) => {
             </ListItem>
         )
     };
-    const Historylist = ({ navigation }) => {
+    const Historylist = ({ navigation }) => { 
+        
         return (
             <FlatList
                 data={data_his}

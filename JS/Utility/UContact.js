@@ -113,9 +113,29 @@ const UContact = {
             prefix: vcardJson.prefix,
             suffix: vcardJson.suffix,
         }
-        
+
+    },
+    createVcard:(
+        firstName,lastName,
+        email,
+        phoneNumber,
+        address,
+        jobTitle,
+        organization,) =>{
+        var value = 'BEGIN:VCARD'       
+        value += '\nVERSION:3.0' 
+        value += '\nN:'+firstName+';'+lastName;
+        value += '\nFN:'+firstName+' '+lastName
+        value += '\nORG:'+organization
+        value += '\nTITLE:'+jobTitle
+        value += '\nADR:'+address
+        value += '\nTEL;WORK;VOICE:'+phoneNumber
+        value += '\nEMAIL;WORK;INTERNET:'+email
+        value += '\nEND:VCARD'
+    
+        return value
     }
 
 }
 
-export {UContact};
+export { UContact };

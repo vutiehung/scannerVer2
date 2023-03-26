@@ -11,6 +11,9 @@ const  UWifi= {
         return {Type:"",SSID:"",Password:""}
 
         
+    },
+    CreatedataQRData:(SSID,Password,Encryption)=>{
+      return "WIFI:T:"+Encryption+";S:"+SSID+";P:"+Password+";H:;;"
     }
 }
 
