@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { Input, Icon, Button, CheckBox } from '@rneui/themed';
-import SelectDropdown from 'react-native-select-dropdown'
+
+import { Picker } from '@react-native-picker/picker';
 import { UContact } from '../../Utility/UContact';
 import { UWifi } from '../../Utility/UWifi';
 import { UEvent } from '../../Utility/UEvent';
@@ -35,7 +36,7 @@ const URLFromInput = ({ navigation }) => {
             </View>
             <View style={styles.URLFromInput.viewButton} >
                 <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                    <Text style={styles.buttonText}>Create</Text>
+                    <Text style={styles.buttonText}>Create QRCode</Text>
                 </TouchableOpacity>
             </View>
 
@@ -137,7 +138,7 @@ const VCardInput = ({ navigation }) => {
                     /></View>
                 <View style={{ width: '65%' }}>
                     <Button
-                        title="Create QR"
+                        title="Create QRCode"
                         onPress={handleSubmit}
                         containerStyle={styles.VcardFromInput.submitButton}
                     /></View>
@@ -234,7 +235,7 @@ const EventInputForm = ({ navigation }) => {
 
     const handleSubmit = () => {
         // Xử lý dữ liệu và lưu vào hệ thống hoặc gửi lên máy chủ
-        var data=UEvent.CreatedataQRData(
+        var data = UEvent.CreatedataQRData(
             eventName,
             description,
             startDate,
@@ -246,69 +247,69 @@ const EventInputForm = ({ navigation }) => {
     //#endregion
 
     return (<View style={{ ...styles.borderinput, flexDirection: 'row', }}>
-    <View style={{width:"100%"}}>
-        <KeyboardAvoidingView>
-            
-            <Input
-                placeholder="Event name"
-                value={eventName} 
-                leftIcon={<Icon name="calendar" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />} 
-                onChangeText={setEventName}
-            />
-             <Input
-                placeholder="Description"
-                value={description} 
-                leftIcon={<Icon name="calendar" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />} 
-                onChangeText={setDescription}
-            />
-            <View style={{ textAlign: "left" ,flexDirection: 'column',width:"100%", }}>
-                <Button type="clear"
-                    title={`Start: ${startDate.toLocaleString()}`}
-                    onPress={() => setShowStartDatePicker(true)}
-                    containerStyle={styles.EventInputForm.submitButton}
+        <View style={{ width: "100%" }}>
+            <KeyboardAvoidingView>
+
+                <Input
+                    placeholder="Event name"
+                    value={eventName}
+                    leftIcon={<Icon name="calendar" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />}
+                    onChangeText={setEventName}
+                />
+                <Input
+                    placeholder="Description"
+                    value={description}
+                    leftIcon={<Icon name="file" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />}
+                    onChangeText={setDescription}
+                />
+                <View style={{ textAlign: "left", flexDirection: 'column', width: "100%", }}>
+                    <Button type="clear"
+                        title={`Start: ${startDate.toLocaleString()}`}
+                        onPress={() => setShowStartDatePicker(true)}
+                        containerStyle={styles.EventInputForm.submitButton}
+                    />
+
+                    <DatePicker modal open={showStartDatePicker}
+                        onConfirm={(date) => {
+                            setShowStartDatePicker(false)
+                            setStartDate(date)
+                        }}
+                        onCancel={() => {
+                            setShowStartDatePicker(false)
+                        }}
+                        date={startDate} onDateChange={setStartDate} />
+                    <Button type="clear"
+                        title={`End: ${endDate.toLocaleString()}`}
+                        onPress={() => {
+                            setShowEndDatePicker(true)
+                            console.log("setShowEndDatePicker", showEndDatePicker)
+                        }}
+                        containerStyle={styles.EventInputForm.submitButton}
+                    />
+
+                    <DatePicker modal open={showEndDatePicker}
+                        onConfirm={(date) => {
+                            setShowEndDatePicker(false)
+                            setEndDate(date)
+                        }}
+                        onCancel={() => {
+                            setShowEndDatePicker(false)
+                        }}
+                        date={endDate} onDateChange={setEndDate} />
+                </View>
+                <Input
+                    placeholder="Address"
+                    leftIcon={<Icon name="map-marker" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />}
+                    value={location}
+                    onChangeText={setLocation}
+                />
+                <Button
+                    title="Create QRCode"
+                    onPress={handleSubmit}
+                    containerStyle={styles.submitButton}
                 />
 
-                <DatePicker modal open={showStartDatePicker}
-                    onConfirm={(date) => {
-                        setShowStartDatePicker(false)
-                        setStartDate(date)
-                    }}
-                    onCancel={() => {
-                        setShowStartDatePicker(false)
-                    }}
-                    date={startDate} onDateChange={setStartDate} />
-                <Button type="clear"
-                    title={`End: ${endDate.toLocaleString()}`}
-                    onPress={() => {
-                        setShowEndDatePicker(true)
-                        console.log("setShowEndDatePicker", showEndDatePicker)
-                    }}
-                    containerStyle={styles.EventInputForm.submitButton}
-                />
-
-                <DatePicker modal open={showEndDatePicker}
-                    onConfirm={(date) => {
-                        setShowEndDatePicker(false)
-                        setEndDate(date)
-                    }}
-                    onCancel={() => {
-                        setShowEndDatePicker(false)
-                    }}
-                    date={endDate} onDateChange={setEndDate} />
-            </View>
-            <Input
-                placeholder="Address"
-                leftIcon={<Icon name="map-marker" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />}
-                value={location}
-                onChangeText={setLocation}
-            />
-            <Button
-                title="Create QRCode"
-                onPress={handleSubmit}
-                containerStyle={styles.submitButton}
-            />
-           
-        </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
         </View>
     </View>)
 }
@@ -316,8 +317,15 @@ const EventInputForm = ({ navigation }) => {
 
 const CreateQR = ({ navigation }) => {
 
-    const [QRtype, setQrtype] = useState('');
-    const lst_QRType = ["VCard", "Link", "WIFI", "EVENT"]
+    const [QRtype, setQrtype] = useState('VCard');
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
+        { label: 'VCard', value: 'VCard' },
+        { label: 'Link', value: 'Link' },
+        { label: 'WIFI', value: 'WIFI' },
+        { label: 'EVENT', value: 'EVENT' }
+    ]);
     return (
         <View style={styles.container}>
             <View style={styles.content} >
@@ -326,9 +334,22 @@ const CreateQR = ({ navigation }) => {
                 <View style={{ flex: 1 }}>
                     <ScrollView>
                         <View style={styles.borderinput}>
-                            <Input placeholder='Select QR type1' ></Input>
+                            <Picker
+                                prompt="Select QRCode type"
+                                selectedValue={QRtype}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setQrtype(itemValue)
+                                }>
+                                <Picker.Item label="VCard" value="VCard" />
+                                <Picker.Item label="Link" value="Link" />
+                                <Picker.Item label="WIFI" value="WIFI" />
+                                <Picker.Item label="EVENT" value="EVENT" />
+                            </Picker>
                         </View>
-                        <EventInputForm navigation={navigation}></EventInputForm>
+                        {QRtype==="Link"&&<URLFromInput navigation={navigation}></URLFromInput>}
+                        {QRtype==="VCard"&&<VCardInput navigation={navigation}></VCardInput>}
+                        {QRtype==="WIFI"&&<WIFIInputForm navigation={navigation}></WIFIInputForm>}
+                        {QRtype==="EVENT"&&<EventInputForm navigation={navigation}></EventInputForm>}
                     </ScrollView>
                 </View>
 

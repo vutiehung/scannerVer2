@@ -12,6 +12,7 @@ import java.util.List;
 import org.reactnative.camera.RNCameraPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.framework_noexpo.MyAppPackage;//them dong nay
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
