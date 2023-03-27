@@ -6,8 +6,8 @@ import { Icon } from '@rneui/themed'
 import ScannerPage from '../ScannerPage';
 import QRCodePage from '../QRCodePage';
 import HistoryPage from '../HistoryPage';
-import ShareContact from '../ShareContact'; 
-import TabCreateQR from '../QRCodePage/TabCreateQR'; 
+import ShareContactTab from '../ShareContact/ShareContactTab'; 
+import TabCreateQR from '../QRCodePage/TabCreateQR';  
  
 const Tab = createBottomTabNavigator();
 function EmptyScreen() {
@@ -20,7 +20,7 @@ function EmptyScreen() {
 const TabPage = () => {     
     return (
         <NavigationContainer>
-            <Tab.Navigator  initialRouteName="QR Code" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
+            <Tab.Navigator  initialRouteName="ShareContact" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
                 <Tab.Screen name="QR Code"    component={TabCreateQR} options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="HistoryMain" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="Scanner" component={ScannerPage} options={{
@@ -30,7 +30,7 @@ const TabPage = () => {
                         </View>
                     ),                   
                 }} />
-                <Tab.Screen name="ShareContact" component={ShareContact} options={{ tabBarIcon: ({ focused}) => (<Icon name='cog' type='font-awesome' color={focused ? '#5a95ff': 'gray'  }  />) }} />
+                <Tab.Screen name="ShareContact" component={ShareContactTab} options={{ headerShown: false,tabBarIcon: ({ focused}) => (<Icon name='cog' type='font-awesome' color={focused ? '#5a95ff': 'gray'  }  />) }} />
                 <Tab.Screen name="More" component={EmptyScreen} options={{ tabBarIcon: ({ focused }) => (<Icon name='ellipsis-horizontal-outline' type='ionicon' color={focused ?'#5a95ff': 'gray'  }  />) }} />
             </Tab.Navigator>
         </NavigationContainer>
