@@ -16,8 +16,10 @@ const TabCreateQR = ({ navigation }) => {
     const Stack = createNativeStackNavigator();
     return (
         <Stack.Navigator>
-            <Stack.Screen name="CreateQR" component={CreateQR} navigation={navigation} />
-            <Stack.Screen name="QRCode2" options={{headerRight:RightButton}} component={QRCodePage} />
+            <Stack.Screen name="CreateQR" component={CreateQR} options={{
+                headerTitle: "Create QRcode"
+            }} navigation={navigation} />
+            <Stack.Screen name="QRCode2" options={{ headerTitle: "QRcode",headerRight:RightButton}} component={QRCodePage} />
         </Stack.Navigator>
     );
 }

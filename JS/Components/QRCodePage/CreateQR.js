@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { Input, Icon, Button, CheckBox } from '@rneui/themed';
-
+import { GlobalContext } from '../../GlobalContext';
 import { Picker } from '@react-native-picker/picker';
 import { UContact } from '../../Utility/UContact';
 import { UWifi } from '../../Utility/UWifi';
@@ -9,7 +9,7 @@ import { UEvent } from '../../Utility/UEvent';
 import DatePicker from 'react-native-date-picker'
 //#region URLFromInput
 
-const URLFromInput = ({ navigation }) => {
+const URLFromInput = ({ navigation, onSave }) => {
     const [url, setUrl] = useState('https://');
 
     const handleUrlChange = text => {
@@ -17,12 +17,12 @@ const URLFromInput = ({ navigation }) => {
     };
     const handleSubmit = () => {
         // do something with the URL, e.g. navigate to it
-
+        onSave(url)
         navigation.navigate('QRCode2', { data: url });
 
     };
     return (
-        <View style={{ ...styles.borderinput, flexDirection: 'row' }}>
+        <View style={{ ...styles.borderinput, flexDirection: 'column' }}>
 
             <View style={styles.URLFromInput.inputContainer}>
                 <Input
@@ -46,7 +46,7 @@ const URLFromInput = ({ navigation }) => {
 //#endregion
 
 //#region VcardInput
-const VCardInput = ({ navigation }) => {
+const VCardInput = ({ navigation, onSave }) => {
     const [firstname, setFirstName] = useState('');
     const [lastname, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -63,6 +63,7 @@ const VCardInput = ({ navigation }) => {
             address,
             jobTitle,
             organization,)
+        onSave(vcard)
         navigation.navigate('QRCode2', { data: vcard });
     };
     const onReset = () => {
@@ -152,7 +153,7 @@ const VCardInput = ({ navigation }) => {
 
 //#endregion
 //#region WIFI Input
-const WIFIInputForm = ({ navigation }) => {
+const WIFIInputForm = ({ navigation, onSave }) => {
     const [SSID, setSSID] = useState('');
     const [Password, setPassword] = useState('');
     const [selectedIndex, setIndex] = useState(0);
@@ -162,6 +163,7 @@ const WIFIInputForm = ({ navigation }) => {
         if (selectedIndex == 1) Encryption = "WEP"
         if (selectedIndex == 2) Encryption = "nopass"
         var wifiData = UWifi.CreatedataQRData(SSID, Password, Encryption);
+        onSave(wifiData)
         navigation.navigate('QRCode2', { data: wifiData });
         // navigation.navigate('QRCode2', );
     };
@@ -183,23 +185,24 @@ const WIFIInputForm = ({ navigation }) => {
                     onChangeText={setPassword}
                 />
 
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row'}}>
 
-                    <CheckBox
+                    <CheckBox containerStyle={{padding:5}}
                         checked={selectedIndex === 0}
                         title="WPA/WPA2"
                         onPress={() => setIndex(0)}
                         checkedIcon="dot-circle-o"
                         uncheckedIcon="circle-o"
+
                     />
-                    <CheckBox
+                    <CheckBox containerStyle={{padding:5}}
                         checked={selectedIndex === 1}
                         onPress={() => setIndex(1)}
                         title="WEP"
                         checkedIcon="dot-circle-o"
                         uncheckedIcon="circle-o"
                     />
-                    <CheckBox
+                    <CheckBox containerStyle={{padding:5}}
                         checked={selectedIndex === 2}
                         onPress={() => setIndex(2)}
                         title="None"
@@ -220,7 +223,7 @@ const WIFIInputForm = ({ navigation }) => {
 }
 //#endregion
 //#region Event Input
-const EventInputForm = ({ navigation }) => {
+const EventInputForm = ({ navigation, onSave }) => {
     //#region khai báo biên
     const [eventName, setEventName] = useState('');
     const [description, setDescription] = useState('');
@@ -242,6 +245,7 @@ const EventInputForm = ({ navigation }) => {
             endDate,
             location,
         );
+        onSave(data)
         navigation.navigate('QRCode2', { data: data });
     };
     //#endregion
@@ -262,52 +266,54 @@ const EventInputForm = ({ navigation }) => {
                     leftIcon={<Icon name="file" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />}
                     onChangeText={setDescription}
                 />
-                <View style={{ textAlign: "left", flexDirection: 'column', width: "100%", }}>
-                    <Button type="clear"
-                        title={`Start: ${startDate.toLocaleString()}`}
-                        onPress={() => setShowStartDatePicker(true)}
-                        containerStyle={styles.EventInputForm.submitButton}
-                    />
-
-                    <DatePicker modal open={showStartDatePicker}
-                        onConfirm={(date) => {
-                            setShowStartDatePicker(false)
-                            setStartDate(date)
-                        }}
-                        onCancel={() => {
-                            setShowStartDatePicker(false)
-                        }}
-                        date={startDate} onDateChange={setStartDate} />
-                    <Button type="clear"
-                        title={`End: ${endDate.toLocaleString()}`}
-                        onPress={() => {
-                            setShowEndDatePicker(true)
-                            console.log("setShowEndDatePicker", showEndDatePicker)
-                        }}
-                        containerStyle={styles.EventInputForm.submitButton}
-                    />
-
-                    <DatePicker modal open={showEndDatePicker}
-                        onConfirm={(date) => {
-                            setShowEndDatePicker(false)
-                            setEndDate(date)
-                        }}
-                        onCancel={() => {
-                            setShowEndDatePicker(false)
-                        }}
-                        date={endDate} onDateChange={setEndDate} />
-                </View>
                 <Input
                     placeholder="Address"
                     leftIcon={<Icon name="map-marker" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />}
                     value={location}
                     onChangeText={setLocation}
                 />
+                <View style={{ textAlign: "left", flexDirection: 'column', width: "100%", }}>
+                    <View style={styles.EventInputForm.submitButton} >
+                        <Text style={styles.EventInputForm.labelTimePicker}><Icon name="clock-o" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />Starts: </Text>
+                        <Text  style={styles.EventInputForm.labelTimePickerValue} onPress={() => setShowStartDatePicker(true)}
+                        >{startDate.toLocaleString()}</Text>
+
+                        <DatePicker modal open={showStartDatePicker}
+                            onConfirm={(date) => {
+                                setShowStartDatePicker(false)
+                                setStartDate(date)
+                            }}
+                            onCancel={() => {
+                                setShowStartDatePicker(false)
+                            }}
+                            date={startDate} onDateChange={setStartDate} />
+                    </View>
+                    <View  style={styles.EventInputForm.submitButton}>
+                    <Text style={styles.EventInputForm.labelTimePicker}><Icon name="clock-o" type="font-awesome" iconStyle={styles.WIFIInputForm.iconintext} />Ends: </Text>
+                        <Text style={styles.EventInputForm.labelTimePickerValue} onPress={() => {
+                            setShowEndDatePicker(true)
+                            console.log("setShowEndDatePicker", showEndDatePicker)
+                        }}>{endDate.toLocaleString()}</Text>
+
+
+                        <DatePicker modal open={showEndDatePicker}
+                            onConfirm={(date) => {
+                                setShowEndDatePicker(false)
+                                setEndDate(date)
+                            }}
+                            onCancel={() => {
+                                setShowEndDatePicker(false)
+                            }}
+                            date={endDate} onDateChange={setEndDate} />
+                    </View>
+                </View>
+                <View style={styles.EventInputForm.buttonSumitView}>        
                 <Button
                     title="Create QRCode"
                     onPress={handleSubmit}
                     containerStyle={styles.submitButton}
                 />
+                </View>    
 
             </KeyboardAvoidingView>
         </View>
@@ -316,7 +322,8 @@ const EventInputForm = ({ navigation }) => {
 //#endregion
 
 const CreateQR = ({ navigation }) => {
-
+    const { config, saveData, data_his
+    } = useContext(GlobalContext);
     const [QRtype, setQrtype] = useState('VCard');
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
@@ -326,11 +333,14 @@ const CreateQR = ({ navigation }) => {
         { label: 'WIFI', value: 'WIFI' },
         { label: 'EVENT', value: 'EVENT' }
     ]);
+    const SaveData = (value) => {
+        var x = [{ 'data': value }, ...data_his]
+        if (config.saveCreate)
+            saveData(x)
+    }
     return (
         <View style={styles.container}>
             <View style={styles.content} >
-
-
                 <View style={{ flex: 1 }}>
                     <ScrollView>
                         <View style={styles.borderinput}>
@@ -346,16 +356,13 @@ const CreateQR = ({ navigation }) => {
                                 <Picker.Item label="EVENT" value="EVENT" />
                             </Picker>
                         </View>
-                        {QRtype==="Link"&&<URLFromInput navigation={navigation}></URLFromInput>}
-                        {QRtype==="VCard"&&<VCardInput navigation={navigation}></VCardInput>}
-                        {QRtype==="WIFI"&&<WIFIInputForm navigation={navigation}></WIFIInputForm>}
-                        {QRtype==="EVENT"&&<EventInputForm navigation={navigation}></EventInputForm>}
+                        {QRtype === "Link" && <URLFromInput navigation={navigation} onSave={SaveData}></URLFromInput>}
+                        {QRtype === "VCard" && <VCardInput navigation={navigation} onSave={SaveData}></VCardInput>}
+                        {QRtype === "WIFI" && <WIFIInputForm navigation={navigation} onSave={SaveData}></WIFIInputForm>}
+                        {QRtype === "EVENT" && <EventInputForm navigation={navigation} onSave={SaveData}></EventInputForm>}
                     </ScrollView>
                 </View>
-
-
             </View>
-
         </View>
     );
 }
@@ -394,9 +401,7 @@ const styles = StyleSheet.create({
         },
         viewButton: {
             flex: 1,
-            justifyContent: 'center', alignItems: 'center',
-            alignItems: 'center',
-            verticalAlign: 'center'
+            margin:10
         },
     },
     //#endregion 
@@ -425,18 +430,33 @@ const styles = StyleSheet.create({
     //#region  Event
     EventInputForm: {
         submitButton: {
-            margin: 10,
-            textAlign: 'left',
-
+            flexDirection: 'row',
+            borderBottomColor: "#9fa5aa",
+            borderBottomWidth: 1,
+            marginBottom: 20,
+            marginLeft: 10,
+            marginRight: 10,
+            paddingBottom: 25,
+            justifyContent:"space-between"
         },
+        labelTimePicker:{
+            fontSize: 18
+        },
+        labelTimePickerValue:{
+            fontSize: 18,
+            color:"#000"
+        },
+        buttonSumitView:{margin:10}
     }
     ,
     //#endregion
     button: {
+
         backgroundColor: '#0080ff',
         borderRadius: 5,
         paddingHorizontal: 10,
         paddingVertical: 8,
+
     },
     buttonText: {
         color: '#ffffff',

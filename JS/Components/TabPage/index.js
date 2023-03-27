@@ -8,7 +8,7 @@ import QRCodePage from '../QRCodePage';
 import HistoryPage from '../HistoryPage';
 import ShareContactTab from '../ShareContact/ShareContactTab'; 
 import TabCreateQR from '../QRCodePage/TabCreateQR';  
- 
+import ConfigPage from '../ConfigPage'; 
 const Tab = createBottomTabNavigator();
 function EmptyScreen() {
     return (
@@ -21,8 +21,8 @@ const TabPage = () => {
     return (
         <NavigationContainer>
             <Tab.Navigator  initialRouteName="ShareContact" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
-                <Tab.Screen name="QR Code"    component={TabCreateQR} options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
-                <Tab.Screen name="HistoryMain" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
+                <Tab.Screen name="QRcode"    component={TabCreateQR} options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
+                <Tab.Screen name="History" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="Scanner" component={ScannerPage} options={{
                     tabBarLabel: "", tabBarIcon: ({focused}) => (
                         <View style={styles.Tab_BigButton }>
@@ -30,8 +30,8 @@ const TabPage = () => {
                         </View>
                     ),                   
                 }} />
-                <Tab.Screen name="ShareContact" component={ShareContactTab} options={{ headerShown: false,tabBarIcon: ({ focused}) => (<Icon name='cog' type='font-awesome' color={focused ? '#5a95ff': 'gray'  }  />) }} />
-                <Tab.Screen name="More" component={EmptyScreen} options={{ tabBarIcon: ({ focused }) => (<Icon name='ellipsis-horizontal-outline' type='ionicon' color={focused ?'#5a95ff': 'gray'  }  />) }} />
+                <Tab.Screen name="Share Contact" component={ShareContactTab} options={{ headerShown: false,tabBarIcon: ({ focused}) => (<Icon name='card-outline' type='ionicon' color={focused ? '#5a95ff': 'gray'  }  />) }} />
+                <Tab.Screen name="Settings" component={ConfigPage} options={{ tabBarIcon: ({ focused }) => (<Icon name='cog' type='ionicon' color={focused ?'#5a95ff': 'gray'  }  />) }} />
             </Tab.Navigator>
         </NavigationContainer>
     );

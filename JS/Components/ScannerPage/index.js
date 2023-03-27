@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import DeprecatedViewPropTypes from 'deprecated-react-native-prop-types';
 import { GlobalContext } from '../../GlobalContext'; 
 
 import { RNCamera } from 'react-native-camera';
@@ -16,8 +15,7 @@ const ScannerPage = () => {
 
 
     onSuccess = ({ barcodes }) => {
-        if (barcodes != null && barcodes.length > 0) {
-            console.log(barcodes.dataRaw)            
+        if (barcodes != null && barcodes.length > 0) {                      
             set_QRPostion(barcodes)
             set_barcodeDetected(true)
             if (timeout != null) { clearTimeout(timeout) }

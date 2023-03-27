@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { PermissionsAndroid, StyleSheet, View, SectionList, Text, TouchableOpacity, VirtualizedList } from 'react-native';
+import { PermissionsAndroid, StyleSheet, View, SectionList, Text, ActivityIndicator, VirtualizedList } from 'react-native';
 import Contacts from 'react-native-contacts';
-import { SearchBar, Button } from '@rneui/themed';
+import { SearchBar, ListItem } from '@rneui/themed';
 import { UContact } from '../../Utility/UContact';
 const ShareContact = ({ navigation }) => {
   const [search, setsearch] = useState("");
@@ -10,11 +10,17 @@ const ShareContact = ({ navigation }) => {
   const [isfilter, setisfilter] = useState(false)
   const [lstcontactsfilter, setlstcontactsfilter] = useState([]);
   const [AllContacts,setAllContact]= useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const renderContactItem = ({ item }) => {
     return ((
-      <TouchableOpacity style={styles.item} onPress={() => CreateQRCode(item)}>
-        <Text>{item.displayName}</Text>
-      </TouchableOpacity>
+
+        <ListItem bottomDivider onPress={() => CreateQRCode(item)}>               
+            <ListItem.Content>
+                <ListItem.Subtitle>{item.displayName}</ListItem.Subtitle>
+            </ListItem.Content>
+        </ListItem>
+
+     
     ));
   };
 
@@ -71,6 +77,7 @@ const ShareContact = ({ navigation }) => {
           Contacts.getAll().then(contacts => {
             setlstcontacts(addContactList(contacts))
             setAllContact(contacts)
+            setIsLoading(false)
           })
 
         } else {
@@ -90,35 +97,45 @@ const ShareContact = ({ navigation }) => {
       setisfilter(true)
       setlstcontactsfilter(
         AllContacts.filter(contact =>
-         contact.givenName.charAt(0).toUpperCase().indexOf("A")>=0
+            contact.displayName.toLowerCase().includes(value.toLowerCase())
      ))
+     
     }
-
+    setsearch(value)
   };
-  const getItemCount = () => {
-    return 100;
-  };
+ 
+  const renderItem = ({ item }) => (
+    <View>
+      <Text>{item.displayName}</Text>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       <SearchBar lightTheme={true}
+        
         placeholder="Type Here..."
         onChangeText={updateSearch}
         value={search}
+        
       />
       {
         isfilter ? <VirtualizedList
-          data={lstcontactsfilter}
-          renderItem={renderContactItem}
-          getItemCount={getItemCount}
-          keyExtractor={(item, index) => item.id}
-        />
-          : <SectionList
+        data={lstcontactsfilter}
+        renderItem={renderContactItem}
+        keyExtractor={(item) => item.recordID}
+        getItemCount={(data) => data.length}
+        getItem={(data, index) => data[index]}
+      />
+          : 
+          (isLoading?<ActivityIndicator size="large" color="#0000ff" />:
+          <SectionList
             sections={lstcontacts}
             renderItem={renderContactItem}
             renderSectionHeader={renderSectionHeader}
+            scrollIndicatorInsets={{ right: 1 }}
             keyExtractor={(item, index) => index.toString()}
-          />
+          />)
       }
 
     </View>
@@ -131,10 +148,8 @@ export default ShareContact;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
   },
   header: {
-    backgroundColor: '#f9c2ff',
     padding: 10,
   },
   headerText: {
