@@ -20,7 +20,7 @@ function EmptyScreen() {
 const TabPage = () => {     
     return (
         <NavigationContainer>
-            <Tab.Navigator  initialRouteName="ShareContact" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
+            <Tab.Navigator  initialRouteName="Scanner" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
                 <Tab.Screen name="QRcode"    component={TabCreateQR} options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="History" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
                 <Tab.Screen name="Scanner" component={ScannerPage} options={{
