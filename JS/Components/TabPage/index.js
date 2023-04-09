@@ -21,9 +21,15 @@ function EmptyScreen() {
 const TabPage = () => {     
     return (
         <NavigationContainer>
+<<<<<<< HEAD
             <Tab.Navigator  initialRouteName="QRcode" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: GlobalCSS.Main_Color,}} >
                 <Tab.Screen name="QRcode"    component={TabCreateQR} options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ?  GlobalCSS.Main_Color: 'gray'  } />) }} />
                 <Tab.Screen name="History" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ?  GlobalCSS.Main_Color: 'gray'  } />) }} />
+=======
+            <Tab.Navigator  initialRouteName="Scanner" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
+                <Tab.Screen name="QRcode"    component={TabCreateQR} options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
+                <Tab.Screen name="History" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
+>>>>>>> 9e5d40c5c794dd489abe394266edc410c9137705
                 <Tab.Screen name="Scanner" component={ScannerPage} options={{
                     tabBarLabel: "", tabBarIcon: ({focused}) => (
                         <View style={styles.Tab_BigButton }>
