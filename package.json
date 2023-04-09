@@ -1,5 +1,5 @@
 {
-  "name": "Barcode_QRcode_Scaner",
+  "name": "Framework_NoExpo",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -21,6 +21,7 @@
     "@rneui/themed": "^4.0.0-rc.7",
     "react": "18.2.0",
     "react-native": "0.71.4",
+    "react-native-calendar-events": "^2.2.0",
     "react-native-camera": "^4.2.1",
     "react-native-contacts": "^7.0.5",
     "react-native-date-picker": "^4.2.9",

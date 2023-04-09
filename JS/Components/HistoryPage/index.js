@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ScrollView, FlatList, StyleSheet, Text, View, Button } from 'react-native';
 import { GlobalContext } from '../../GlobalContext';
-import { ListItem, Avatar, Icon,SearchBar } from '@rneui/themed';
+import { ListItem, Avatar, Icon, SearchBar } from '@rneui/themed';
 import { DecodeQR, GetIcon, GetText, GetTextToHistory } from '../../Utility'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import QRCodePage from '../QRCodePage/index';
+import GlobalCSS from '../../CSS/GlobalCSS';
 const HistoryPage = ({ navigaton }) => {
-  
+
     const [scanValue, set_scanValue] = useState([]);
     const Item = ({ title, navigation }) => {
         return (
@@ -29,16 +30,18 @@ const HistoryPage = ({ navigaton }) => {
         const [search, setsearch] = useState("");
         const updateSearch = (value) => {
             setsearch(value)
-          };
+        };
         const filterData = () => {
-            
+
             return data_his.filter((item) =>
-              GetTextToHistory(item.data).toLowerCase().includes(search.toLowerCase()) 
+                GetTextToHistory(item.data).toLowerCase().includes(search.toLowerCase())
             );
-          };
+        };
         return (
             <View>
                 <SearchBar lightTheme={true}
+                    containerStyle={styles.search_container_style}
+                    inputContainerStyle={styles.search_inputcontainer_style}
                     placeholder="Type Here..."
                     onChangeText={updateSearch}
                     value={search}
@@ -92,7 +95,15 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#c2c2c2'
+        backgroundColor: GlobalCSS.Main_Color
+    },
+    search_container_style:
+    {
+        backgroundColor: GlobalCSS.Input_Background
+    },
+    search_inputcontainer_style: {
+        backgroundColor: "#eeeef0",
+        borderRadius: 15
     }
 });
 

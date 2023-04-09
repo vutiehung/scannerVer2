@@ -9,6 +9,7 @@ import HistoryPage from '../HistoryPage';
 import ShareContactTab from '../ShareContact/ShareContactTab'; 
 import TabCreateQR from '../QRCodePage/TabCreateQR';  
 import ConfigPage from '../ConfigPage'; 
+import GlobalCSS from '../../CSS/GlobalCSS';
 const Tab = createBottomTabNavigator();
 function EmptyScreen() {
     return (
@@ -20,18 +21,18 @@ function EmptyScreen() {
 const TabPage = () => {     
     return (
         <NavigationContainer>
-            <Tab.Navigator  initialRouteName="ShareContact" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: '#5a95ff',}} >
-                <Tab.Screen name="QRcode"    component={TabCreateQR} options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
-                <Tab.Screen name="History" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ? '#5a95ff': 'gray'  } />) }} />
+            <Tab.Navigator  initialRouteName="QRcode" screenOptions ={{tabBarInactiveTintColor: 'gray',  tabBarActiveTintColor: GlobalCSS.Main_Color,}} >
+                <Tab.Screen name="QRcode"    component={TabCreateQR} options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='qrcode' type='font-awesome' color={focused ?  GlobalCSS.Main_Color: 'gray'  } />) }} />
+                <Tab.Screen name="History" component={HistoryPage}   options={{headerShown: false, tabBarIcon: ({focused}) => (<Icon name='history' type='font-awesome' color={focused ?  GlobalCSS.Main_Color: 'gray'  } />) }} />
                 <Tab.Screen name="Scanner" component={ScannerPage} options={{
                     tabBarLabel: "", tabBarIcon: ({focused}) => (
                         <View style={styles.Tab_BigButton }>
-                            <Icon name='barcode-outline' style={{ left: 2 }} type='ionicon' size={55} color={focused ? '#fff' :'#bfbbb0'  }    />
+                            <Icon name='barcode-outline' style={{ left: 2 }} type='ionicon' size={55} color={focused ? '#fff' :'#fff'  }    />
                         </View>
                     ),                   
                 }} />
-                <Tab.Screen name="Share Contact" component={ShareContactTab} options={{ headerShown: false,tabBarIcon: ({ focused}) => (<Icon name='card-outline' type='ionicon' color={focused ? '#5a95ff': 'gray'  }  />) }} />
-                <Tab.Screen name="Settings" component={ConfigPage} options={{ tabBarIcon: ({ focused }) => (<Icon name='cog' type='ionicon' color={focused ?'#5a95ff': 'gray'  }  />) }} />
+                <Tab.Screen name="Share Contact" component={ShareContactTab} options={{ headerShown: false,tabBarIcon: ({ focused}) => (<Icon name='card-outline' type='ionicon' color={focused ? GlobalCSS.Main_Color: 'gray'  }  />) }} />
+                <Tab.Screen name="Settings" component={ConfigPage} options={{ tabBarIcon: ({ focused }) => (<Icon name='cog' type='ionicon' color={focused ? GlobalCSS.Main_Color: 'gray'  }  />) }} />
             </Tab.Navigator>
         </NavigationContainer>
     );
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
         height: 65,
         width: 65,
         borderRadius: 50,
-        backgroundColor: '#5a95ff',
+        backgroundColor:  GlobalCSS.Main_Color,
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: "#000",
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
-        elevation: 9,
+        elevation: 3,
     }, container: {
         flex: 1,
       }

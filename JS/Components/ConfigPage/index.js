@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { GlobalContext } from '../../GlobalContext';
 import { ScrollView, FlatList, StyleSheet, Text, View, Button } from 'react-native';
 import { Switch } from '@rneui/themed';
+import GlobalCSS from '../../CSS/GlobalCSS';
 const ConfigPage = () => {
     const {
         config, saveConfig
@@ -11,6 +12,7 @@ const ConfigPage = () => {
             <View  style={styles.Content} >                
             <Text style={styles.text_Content}>Scanning history </Text>
             <Switch
+                    color={GlobalCSS.Main_Color}
                     value={config.saveScan}
                     onValueChange={(value) => saveConfig({ ...config, 'saveScan': value })}
                 />
@@ -22,6 +24,7 @@ const ConfigPage = () => {
             <View  style={styles.Content}>
             <Text style={styles.text_Content}>QRcode history</Text>
                 <Switch
+                 color={GlobalCSS.Main_Color}
                     value={config.saveCreate}
                     onValueChange={(value) => saveConfig({ ...config, 'saveCreate': value })}
                 />

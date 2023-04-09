@@ -1,5 +1,5 @@
-import React,{useState,useContext} from 'react';
-import { Text, View, StyleSheet, Alert, PermissionsAndroid, Linking, Platform ,Clipboard } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Text, View, StyleSheet, Alert, PermissionsAndroid, Linking, Platform, Clipboard } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import { DecodeQR, GetIcon, GetText, isUndefined } from '../../Utility'
 import { UContact } from '../../Utility/UContact';
@@ -10,9 +10,10 @@ import { UWifi } from '../../Utility/UWifi';
 import { UEvent } from '../../Utility/UEvent';
 import WifiManager from 'react-native-wifi-reborn';
 import { GlobalContext } from '../../GlobalContext';
+import RNCalendarEvents from "react-native-calendar-events";
 const QrcodeMark = (Props) => {
     const {
-        data_his,saveData,config
+        data_his, saveData, config
     } = useContext(GlobalContext);
     const [ButtonWidth, set_ButtonWidth] = useState(0);
     var value = Props.QRPostion
@@ -26,15 +27,15 @@ const QrcodeMark = (Props) => {
         data = Props.QRPostion[0].dataRaw;
         Otop = Props.QRPostion[0].bounds.origin.y;
         Oleft = Props.QRPostion[0].bounds.origin.x;
-        height = Props.QRPostion[0].bounds.size.height*1.2;
-        width = Props.QRPostion[0].bounds.size.width*1.2;
+        height = Props.QRPostion[0].bounds.size.height * 1.2;
+        width = Props.QRPostion[0].bounds.size.width * 1.2;
     }
 
-    const QrResultPress = () => {    
-        var x=[{'data': data },...data_his ]
-        if(config.saveScan)
+    const QrResultPress = () => {
+        var x = [{ 'data': data }, ...data_his]
+        if (config.saveScan)
             saveData(x)
-       
+
         switch (DecodeQR(data)) {
             case "URL":
                 onOpenLink(data)
@@ -54,12 +55,13 @@ const QrcodeMark = (Props) => {
             case "SMSTO":
                 var smsvalue = USms.ConvertQRData2Json(data)
                 onSendSMSMessage(smsvalue.Phone, smsvalue.Content)
-                break;      
+                break;
             case "EVENT":
-                var event=UEvent.ConvertQRData2Json(data)               
+                var event = UEvent.ConvertQRData2Json(data)
+                onAddEvent(event)
                 break;
             default:
-                onOpenLink("https://www.amazon.com/s?k="+data)
+                onOpenLink("https://www.amazon.com/s?k=" + data)
                 break;
         }
     }
@@ -130,7 +132,51 @@ const QrcodeMark = (Props) => {
         }
     }
 
-    const onAddContact=(vcardJson)=>{
+    const onAddEvent = async (eventJson) => {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_CALENDAR,
+            {
+                title: 'Calendar permission is required to insert calendar',
+                message:
+                    'This app needs write calendar permission as this is required  ' +
+                    'to insert calendar.',
+                buttonNegative: 'DENY',
+                buttonPositive: 'ALLOW',
+            }
+        );
+
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+            RNCalendarEvents.checkPermissions().then(async (result) => {
+                console.log(result)
+                if (result === 'authorized') {
+                    console.log("ket quả 1", eventJson)
+                    try {
+                        var reslut = await RNCalendarEvents.saveEvent(eventJson.title, {
+                            startDate: eventJson.startDate,
+                            endDate: eventJson.endDate,
+                            location: eventJson.location
+                        })
+                        console.log(reslut)
+                    }
+                    catch(e)
+                    {
+                        console.log("lỗi")
+                    }
+                    
+                    // Ứng dụng đã được cấp quyền truy cập lịch trên thiết bị
+                } else {
+                    // Ứng dụng chưa được cấp quyền truy cập lịch trên thiết bị
+                }
+            });
+            // console.log(RNCalendarEvents.checkPermissions((readOnly = false)));
+
+
+        }
+    }
+
+    const onAddContact = (vcardJson) => {
         var contact = UContact.jsonToAndroidContact(vcardJson)
         Contacts.openContactForm(contact).then((contact) => {
             console.log('Form submitted successfully');
@@ -141,21 +187,21 @@ const QrcodeMark = (Props) => {
             });
     }
 
-    const getLayout=(event) => {
-        var widthButton=event.nativeEvent.layout.width
-        set_ButtonWidth((width-widthButton)/2) 
-      
-      }
+    const getLayout = (event) => {
+        var widthButton = event.nativeEvent.layout.width
+        set_ButtonWidth((width - widthButton) / 2)
+
+    }
 
     const contentProcess = () => {
-        return (<Button type="clear" style={{ flexDirection: 'row', alignItems: 'center' }} onPress={QrResultPress}  onLayout={getLayout}>
+        return (<Button type="clear" style={{ flexDirection: 'row', alignItems: 'center' }} onPress={QrResultPress} onLayout={getLayout}>
             <Icon
                 name={GetIcon(DecodeQR(data))}
                 size={12}
                 type='ionicon'
                 color='#000'
             />
-            <Text style={{ marginLeft: 5,fontSize:12 }}>{GetText(data)}  </Text>
+            <Text style={{ marginLeft: 5, fontSize: 12 }}>{GetText(data)}  </Text>
         </Button>)
     }
 
@@ -173,7 +219,7 @@ const QrcodeMark = (Props) => {
 
             <View style={{ ...styles.mask_n, top: height, left: width - 20 }} />
             <View style={{ ...styles.mask_n, ...styles.mask_d, top: height - 10, left: width - 10 }} />
-            <View style={{ top: height + 10 ,left:ButtonWidth, flex: 1, alignItems: 'center', position: 'absolute', }}>
+            <View style={{ top: height + 10, left: ButtonWidth, flex: 1, alignItems: 'center', position: 'absolute', }}>
                 <View style={{ ...styles.text_qrResult }}>
                     {contentProcess()}
                 </View>

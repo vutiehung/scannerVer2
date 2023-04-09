@@ -4,23 +4,24 @@ import { PermissionsAndroid, StyleSheet, View, SectionList, Text, ActivityIndica
 import Contacts from 'react-native-contacts';
 import { SearchBar, ListItem } from '@rneui/themed';
 import { UContact } from '../../Utility/UContact';
+import GlobalCSS from '../../CSS/GlobalCSS';
 const ShareContact = ({ navigation }) => {
   const [search, setsearch] = useState("");
   const [lstcontacts, setlstcontacts] = useState([]);
   const [isfilter, setisfilter] = useState(false)
   const [lstcontactsfilter, setlstcontactsfilter] = useState([]);
-  const [AllContacts,setAllContact]= useState([]);
+  const [AllContacts, setAllContact] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const renderContactItem = ({ item }) => {
     return ((
 
-        <ListItem bottomDivider onPress={() => CreateQRCode(item)}>               
-            <ListItem.Content>
-                <ListItem.Subtitle>{item.displayName}</ListItem.Subtitle>
-            </ListItem.Content>
-        </ListItem>
+      <ListItem bottomDivider onPress={() => CreateQRCode(item)}>
+        <ListItem.Content>
+          <ListItem.Subtitle>{item.displayName}</ListItem.Subtitle>
+        </ListItem.Content>
+      </ListItem>
 
-     
+
     ));
   };
 
@@ -97,13 +98,13 @@ const ShareContact = ({ navigation }) => {
       setisfilter(true)
       setlstcontactsfilter(
         AllContacts.filter(contact =>
-            contact.displayName.toLowerCase().includes(value.toLowerCase())
-     ))
-     
+          contact.displayName.toLowerCase().includes(value.toLowerCase())
+        ))
+
     }
     setsearch(value)
   };
- 
+
   const renderItem = ({ item }) => (
     <View>
       <Text>{item.displayName}</Text>
@@ -113,29 +114,30 @@ const ShareContact = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <SearchBar lightTheme={true}
-        
+        containerStyle={styles.search_container_style}
+        inputContainerStyle={styles.search_inputcontainer_style}
         placeholder="Type Here..."
         onChangeText={updateSearch}
         value={search}
-        
+
       />
       {
         isfilter ? <VirtualizedList
-        data={lstcontactsfilter}
-        renderItem={renderContactItem}
-        keyExtractor={(item) => item.recordID}
-        getItemCount={(data) => data.length}
-        getItem={(data, index) => data[index]}
-      />
-          : 
-          (isLoading?<ActivityIndicator size="large" color="#0000ff" />:
-          <SectionList
-            sections={lstcontacts}
-            renderItem={renderContactItem}
-            renderSectionHeader={renderSectionHeader}
-            scrollIndicatorInsets={{ right: 1 }}
-            keyExtractor={(item, index) => index.toString()}
-          />)
+          data={lstcontactsfilter}
+          renderItem={renderContactItem}
+          keyExtractor={(item) => item.recordID}
+          getItemCount={(data) => data.length}
+          getItem={(data, index) => data[index]}
+        />
+          :
+          (isLoading ? <ActivityIndicator size="large" color="#0000ff" /> :
+            <SectionList
+              sections={lstcontacts}
+              renderItem={renderContactItem}
+              renderSectionHeader={renderSectionHeader}
+              scrollIndicatorInsets={{ right: 1 }}
+              keyExtractor={(item, index) => index.toString()}
+            />)
       }
 
     </View>
@@ -161,4 +163,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 44,
   },
+  search_container_style:
+  {
+    backgroundColor:GlobalCSS.Input_Background
+  },
+  search_inputcontainer_style:{
+    backgroundColor:"#eeeef0",
+    borderRadius:15
+  }
+
 });
