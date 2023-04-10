@@ -50,8 +50,7 @@ const UEvent = {
 
 
         return value
-      },
-
+      }
 }
 
 export { UEvent };
