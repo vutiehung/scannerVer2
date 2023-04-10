@@ -43,7 +43,7 @@ export const GlobalProvider = ({ children }) => {
         if (ConfigValue != null) {
           set_Dataconfig(ConfigValue);
         }
-        else { set_Dataconfig({'saveScan':true,'saveCreate':true}); }
+        else { set_Dataconfig({'saveScan':true,'saveCreate':true,'AutoSearch':true}); }
       } catch (e) {
 
       }

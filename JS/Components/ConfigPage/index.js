@@ -9,29 +9,41 @@ const ConfigPage = () => {
     } = useContext(GlobalContext);
     return (
         <View style={styles.container} >
-            <View  style={styles.Content} >                
-            <Text style={styles.text_Content}>Scanning history </Text>
-            <Switch
+            <View style={styles.Content} >
+                <Text style={styles.text_Content}>Scanning history </Text>
+                <Switch
                     color={GlobalCSS.Main_Color}
                     value={config.saveScan}
                     onValueChange={(value) => saveConfig({ ...config, 'saveScan': value })}
                 />
-                
+
             </View>
             <View style={styles.Content_description}>
                 <Text>Save history of your scans</Text>
             </View>
-            <View  style={styles.Content}>
-            <Text style={styles.text_Content}>QRcode history</Text>
+            <View style={styles.Content}>
+                <Text style={styles.text_Content}>QRcode history</Text>
                 <Switch
-                 color={GlobalCSS.Main_Color}
+                    color={GlobalCSS.Main_Color}
                     value={config.saveCreate}
                     onValueChange={(value) => saveConfig({ ...config, 'saveCreate': value })}
                 />
-                
+
             </View>
             <View style={styles.Content_description}>
                 <Text>Save history of your creating QRcode</Text>
+            </View>
+            <View style={styles.Content}>
+                <Text style={styles.text_Content}>Auto Search</Text>
+                <Switch
+                    color={GlobalCSS.Main_Color}
+                    value={config.AutoSearch}
+                    onValueChange={(value) => saveConfig({ ...config, 'AutoSearch': value })}
+                />
+
+            </View>
+            <View style={styles.Content_description}>
+                <Text>Automatically search after scanning</Text>
             </View>
         </View>
 
@@ -43,36 +55,36 @@ export default ConfigPage;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop:30
+        paddingTop: 30
     },
     Content:
     {
-        
+
         flexDirection: 'row',
-        backgroundColor:"#fff",
-        padding:20,
-        borderBottomColor:"#e9e8ea",
-        borderBottomWidth:1,
-        borderTopColor:"#e9e8ea",
-        borderTopWidth:1,
-        marginTop:10,
-        justifyContent:"space-between"
-        
+        backgroundColor: "#fff",
+        padding: 20,
+        borderBottomColor: "#e9e8ea",
+        borderBottomWidth: 1,
+        borderTopColor: "#e9e8ea",
+        borderTopWidth: 1,
+        marginTop: 10,
+        justifyContent: "space-between"
+
     },
     text_Content:
     {
-        color:"#000000",
-        fontSize:15,
+        color: "#000000",
+        fontSize: 15,
     }
     ,
     Content_description:
     {
-        color:"#86858a",
-        marginBottom:20,
-        marginTop:5,
-        paddingLeft:20,
-        
-        
+        color: "#86858a",
+        marginBottom: 20,
+        marginTop: 5,
+        paddingLeft: 20,
+
+
     }
-    }
-    )
+}
+)

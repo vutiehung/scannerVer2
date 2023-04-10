@@ -1,4 +1,4 @@
-
+import { ConvertDatetoIsoDate } from "./index";
 const UEvent = {
     ConvertQRData2Json: (data) => {
         var lines = data.split(/\r?\n/);
@@ -27,10 +27,13 @@ const UEvent = {
             }
            
         }
+
+
+
         event = {
             title: summary,
-            startDate: dtStart,
-            endDate: dtEnd,
+            startDate: ConvertDatetoIsoDate(dtStart),
+            endDate: ConvertDatetoIsoDate(dtEnd),
             location: location,
         };       
         return event;
@@ -47,7 +50,8 @@ const UEvent = {
 
 
         return value
-      }
+      },
+
 }
 
 export { UEvent };

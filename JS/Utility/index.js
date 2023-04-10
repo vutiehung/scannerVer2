@@ -1,10 +1,15 @@
+import { useContext } from "react";
+import { GlobalContext } from "../GlobalContext";
 import { UContact } from "./UContact";
 import { USms } from "./USms";
 import { UEmail } from "./UEmail";
 import { UWifi } from "./UWifi";
 import { UEvent } from "./UEvent";
-const DecodeQR = (data) => {
 
+
+
+const DecodeQR = (data) => {
+    
     function isURL(content) {
         const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
         return urlRegex.test(content);
@@ -73,6 +78,9 @@ const GetIcon = (data) => {
     return (iconName)
 }
 const GetText = (data) => {
+    const {
+        config
+  } = useContext(GlobalContext);
     var returnText = "";
     switch (DecodeQR(data)) {
         case "URL":
@@ -88,7 +96,7 @@ const GetText = (data) => {
             break;
         case "WIFI":
             var wifi = UWifi.ConvertQRData2Json(data)
-            returnText = "Join '" + wifi.SSID +"' network"
+            returnText = "Join '" + wifi.SSID + "' network"
             break;
         case "SMSTO":
             var sms = USms.ConvertQRData2Json(data)
@@ -99,26 +107,32 @@ const GetText = (data) => {
             returnText = "add '" + event.title + "' to Calendar"
             break;
         default:
-            returnText = "Search " + data
+            if (config.AutoSearch) {
+                returnText = "Search " + data
+            }else
+            {
+                returnText = "Copy '" + data+"' to clipboard"
+            }
+
             break;
     }
     return (returnText)
 }
 
 
-const GetTextToHistory =(data) => {
+const GetTextToHistory = (data) => {
     var returnText = "";
     switch (DecodeQR(data)) {
         case "URL":
-            returnText =  data
+            returnText = data
             break;
         case "VCARD":
             var vcard = UContact.vcardToJSON(data)
-            returnText =  vcard.fullName 
+            returnText = vcard.fullName
             break;
         case "EMAILTO":
             var emailto = UEmail.ConvertQRData2Json(data)
-            returnText = "Send Mail to " +emailto.Email
+            returnText = "Send Mail to " + emailto.Email
             break;
         case "WIFI":
             var wifi = UWifi.ConvertQRData2Json(data)
@@ -130,7 +144,7 @@ const GetTextToHistory =(data) => {
             break;
         case "EVENT":
             var event = UEvent.ConvertQRData2Json(data)
-            returnText = "Event " + event.title 
+            returnText = "Event " + event.title
             break;
         default:
             returnText = data
@@ -145,5 +159,29 @@ const isUndefined = (object) => {
         return true;
     return false
 }
+const ConvertDatetoIsoDate = (dateValue) => {
+    try {
+        var date = new Date(dateValue)
+        // Tạo một đối tượng Date với múi giờ UTC+7   
+        date.setUTCHours(date.getUTCHours());
 
-export { DecodeQR, GetIcon, GetText, isUndefined ,GetTextToHistory}
+        // Lấy các thông tin về ngày và giờ
+        const year = date.getUTCFullYear();
+        const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+        const day = String(date.getUTCDate()).padStart(2, "0");
+        const hours = String(date.getUTCHours()).padStart(2, "0");
+        const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+        const seconds = String(date.getUTCSeconds()).padStart(2, "0");
+
+        // Tạo định dạng ISO Date
+        const isoDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
+        return isoDate
+    }
+    catch (e) {
+        return null;
+    }
+
+}
+
+
+export { DecodeQR, GetIcon, GetText, isUndefined, GetTextToHistory, ConvertDatetoIsoDate }

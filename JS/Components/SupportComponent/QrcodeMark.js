@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Text, View, StyleSheet, Alert, PermissionsAndroid, Linking, Platform, Clipboard } from 'react-native';
+import { Text, View, StyleSheet, Alert, PermissionsAndroid, Linking, Platform, ToastAndroid } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
 import { DecodeQR, GetIcon, GetText, isUndefined } from '../../Utility'
 import { UContact } from '../../Utility/UContact';
@@ -11,6 +11,8 @@ import { UEvent } from '../../Utility/UEvent';
 import WifiManager from 'react-native-wifi-reborn';
 import { GlobalContext } from '../../GlobalContext';
 import RNCalendarEvents from "react-native-calendar-events";
+import Clipboard from '@react-native-clipboard/clipboard';
+import { enableScreens } from 'react-native-screens';
 const QrcodeMark = (Props) => {
     const {
         data_his, saveData, config
@@ -61,7 +63,16 @@ const QrcodeMark = (Props) => {
                 onAddEvent(event)
                 break;
             default:
-                onOpenLink("https://www.amazon.com/s?k=" + data)
+                if (config.AutoSearch) {
+                    onOpenLink("https://www.google.com/search?q=" + data)
+
+                } else {
+                    Clipboard.setString(data);
+                    ToastAndroid.showWithGravity(
+                        'Copied to clipboard!',
+                        ToastAndroid.LONG,
+                        ToastAndroid.TOP,)
+                }
                 break;
         }
     }
@@ -158,13 +169,22 @@ const QrcodeMark = (Props) => {
                             endDate: eventJson.endDate,
                             location: eventJson.location
                         })
-                        console.log(reslut)
+
+                        ToastAndroid.showWithGravity(
+                            'Inserted to Calendar',
+                            ToastAndroid.LONG,
+                            ToastAndroid.TOP,
+                        )
                     }
-                    catch(e)
-                    {
-                        console.log("lỗi")
+                    catch (error) {
+
+                        ToastAndroid.showWithGravity(
+                            'Can not insert to Calendar ',
+                            ToastAndroid.SHORT,
+                            ToastAndroid.TOP,
+                        )
                     }
-                    
+
                     // Ứng dụng đã được cấp quyền truy cập lịch trên thiết bị
                 } else {
                     // Ứng dụng chưa được cấp quyền truy cập lịch trên thiết bị
