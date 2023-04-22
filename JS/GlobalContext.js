@@ -27,11 +27,12 @@ export const GlobalProvider = ({ children }) => {
   const [data, setData] = useState({});
   const [data_his, setdata_his] = useState([]);
   const [config, set_Dataconfig] = useState();
-
+  const [Loading,setLoading]=useState(true);
   useEffect(() => {
     // Lấy dữ liệu từ AsyncStorage khi ứng dụng được mở lần đầu tiên
     const getData1 = async () => {
       try {
+        
         const jsonValue = await getData('HistoryQR');
         if (jsonValue != null) {
           setdata_his(jsonValue);
@@ -44,6 +45,10 @@ export const GlobalProvider = ({ children }) => {
           set_Dataconfig(ConfigValue);
         }
         else { set_Dataconfig({'saveScan':true,'saveCreate':true,'AutoSearch':true}); }
+        
+        setLoading(false)
+         
+        
       } catch (e) {
 
       }
@@ -72,7 +77,7 @@ export const GlobalProvider = ({ children }) => {
     }
   };
   const value = {
-    data_his, saveData,config,saveConfig
+    data_his, saveData,config,saveConfig,Loading
   };
   return (
     <GlobalContext.Provider value={value}>

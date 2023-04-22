@@ -6,6 +6,7 @@ import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
 import { Text } from '@rneui/base';
 import { GetText, GetTextToHistory } from '../../Utility';
+import GlobalCSS from '../../CSS/GlobalCSS';
 const QRCodePage = ({ route, navigation }) => {
   const [value, setValue] = useState("ádfadsf");
   const viewShotRef = useRef();
@@ -23,7 +24,7 @@ const QRCodePage = ({ route, navigation }) => {
       name="share-outline"
       onPress={onShare}
       type='ionicon' size={30}
-      color="#000"
+      color={GlobalCSS.Icon_Color}
     />)
   }
   const onShare = async () => {

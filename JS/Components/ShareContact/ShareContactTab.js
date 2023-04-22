@@ -3,6 +3,7 @@ import QRCodePage from '../QRCodePage/index';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ShareContact from './index';
 import { Icon } from '@rneui/base';
+import GlobalCSS from '../../CSS/GlobalCSS';
 const RightButton = () => {
     return (<Icon
         name="share-outline"
@@ -17,9 +18,18 @@ const ShareContactTab = ({ navigation }) => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="ShareContact1" options={{
+                headerTintColor: GlobalCSS.Icon_Color,
+                headerStyle: {
+                    backgroundColor: GlobalCSS.Main_Color,
+                },
                 headerTitle: "Share Contact"
             }} component={ShareContact} navigation={navigation} />
-            <Stack.Screen name="QRCode21"  options={{  headerTitle: "QRCode",headerRight: RightButton }} component={QRCodePage} />
+            <Stack.Screen name="QRCode21" options={{
+                headerTintColor: GlobalCSS.Icon_Color,
+                headerStyle: {
+                    backgroundColor: GlobalCSS.Main_Color,
+                }, headerTitle: "QRCode", headerRight: RightButton
+            }} component={QRCodePage} />
         </Stack.Navigator>
     );
 }

@@ -62,7 +62,7 @@ const HistoryPage = ({ navigaton }) => {
         return (<Icon
             name="share-outline"
             type='ionicon' size={30}
-            color="#000"
+            color={GlobalCSS.Icon_Color}
         />)
     }
 
@@ -70,10 +70,16 @@ const HistoryPage = ({ navigaton }) => {
     return (
 
         <Stack.Navigator>
-            <Stack.Screen name="History1" options={{
+            <Stack.Screen name="History1" options={{ headerTintColor: GlobalCSS.Icon_Color,
+                headerStyle: {
+                    backgroundColor: GlobalCSS.Main_Color,
+                },
                 headerTitle: "History"
             }} component={Historylist} />
-            <Stack.Screen name="QRCode" options={{ headerTitle: "QRCode", headerRight: RightButton }} component={QRCodePage} />
+            <Stack.Screen name="QRCode" options={{ headerTintColor: GlobalCSS.Icon_Color,
+                headerStyle: {
+                    backgroundColor: GlobalCSS.Main_Color,
+                }, headerTitle: "QRCode", headerRight: RightButton }} component={QRCodePage} />
         </Stack.Navigator>
 
     );
