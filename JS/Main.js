@@ -14,7 +14,10 @@ const Main = () => {
       
         {isLoading ? (
           <LoadingScreen loadingComplete={(value)=>setIsLoading(value)}/>
-        ) : <TabPage/>}
+        ) : <TabPage/>
+        
+        
+        }
       
       </SafeAreaView>
       </GlobalProvider>

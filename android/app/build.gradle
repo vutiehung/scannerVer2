@@ -167,6 +167,7 @@ dependencies {
     implementation project(':react-native-contacts')
     implementation("com.facebook.react:react-android")
     implementation project(':react-native-vector-icons')
+     implementation 'com.google.android.gms:play-services-ads:22.0.0'
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
     implementation project(':react-native-camera')
     implementation project(':react-native-wifi-reborn')

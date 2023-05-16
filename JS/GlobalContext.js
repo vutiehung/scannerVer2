@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import { InterstitialView,OpenAppView } from '../LIB/RNAdmob/src';
+import GlobalValue from './Assets/GlobalValue';
 const storeData = async (key, value) => {
   try {
     const jsonValue = JSON.stringify(value);
@@ -28,11 +29,16 @@ export const GlobalProvider = ({ children }) => {
   const [data_his, setdata_his] = useState([]);
   const [config, set_Dataconfig] = useState();
   const [Loading,setLoading]=useState(true);
+  const [interView,setInterView] = useState([]);
+  const [openAppView,setOpenAppViewView] = useState([]);
   useEffect(() => {
     // Lấy dữ liệu từ AsyncStorage khi ứng dụng được mở lần đầu tiên
     const getData1 = async () => {
       try {
-        
+        var interView_obj=new InterstitialView(GlobalValue.admob_Interstitial)
+        var openAppView_obj=new OpenAppView(GlobalValue.admob_open_app)
+        setOpenAppViewView(openAppView_obj)
+        setInterView(interView_obj)
         const jsonValue = await getData('HistoryQR');
         if (jsonValue != null) {
           setdata_his(jsonValue);
@@ -77,7 +83,7 @@ export const GlobalProvider = ({ children }) => {
     }
   };
   const value = {
-    data_his, saveData,config,saveConfig,Loading
+    data_his, saveData,config,saveConfig,Loading,interView,openAppView
   };
   return (
     <GlobalContext.Provider value={value}>

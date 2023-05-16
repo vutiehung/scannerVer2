@@ -5,6 +5,8 @@ import Contacts from 'react-native-contacts';
 import { SearchBar, ListItem } from '@rneui/themed';
 import { UContact } from '../../Utility/UContact';
 import GlobalCSS from '../../CSS/GlobalCSS';
+import { AdmobBanner } from '../../../LIB/RNAdmob';
+import GlobalValue from '../../Assets/GlobalValue';
 const ShareContact = ({ navigation }) => {
   const [search, setsearch] = useState("");
   const [lstcontacts, setlstcontacts] = useState([]);
@@ -12,15 +14,20 @@ const ShareContact = ({ navigation }) => {
   const [lstcontactsfilter, setlstcontactsfilter] = useState([]);
   const [AllContacts, setAllContact] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const renderContactItem = ({ item }) => {
+  const renderContactItem = ({ item, index }) => {
     return ((
-
-      <ListItem bottomDivider onPress={() => CreateQRCode(item)}>
-        <ListItem.Content>
-          <ListItem.Subtitle>{item.displayName}</ListItem.Subtitle>
-        </ListItem.Content>
-      </ListItem>
-
+      <>
+        {index % 15 == 5 ?
+          <AdmobBanner adUnitID={GlobalValue.admob_banner_History} onAdLoaded={(event) => { console.log(event.Status) }} height={60} size={"FULL_BANNER"} onAdFailedToLoad={(event) => { console.log(event.messenge) }}></AdmobBanner>
+          :
+          <></>
+        }
+        <ListItem bottomDivider onPress={() => CreateQRCode(item)}>
+          <ListItem.Content>
+            <ListItem.Subtitle>{item.displayName}</ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      </>
 
     ));
   };
@@ -62,17 +69,7 @@ const ShareContact = ({ navigation }) => {
   React.useEffect(() => {
     checkContact = async () => {
       try {
-        const andoidContactPermission = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-          {
-            title: "Contacts Permission",
-            message:
-              "This app would like to view your contacts.",
-            buttonNeutral: "Ask Me Later",
-            buttonNegative: "Cancel",
-            buttonPositive: "OK"
-          }
-        );
+        const andoidContactPermission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS);
         if (andoidContactPermission === PermissionsAndroid.RESULTS.GRANTED) {
           console.log("Contacts Permission granted");
           Contacts.getAll().then(contacts => {
@@ -165,11 +162,11 @@ const styles = StyleSheet.create({
   },
   search_container_style:
   {
-    backgroundColor:GlobalCSS.Input_Background
+    backgroundColor: GlobalCSS.Input_Background
   },
-  search_inputcontainer_style:{
-    backgroundColor:"#eeeef0",
-    borderRadius:15
+  search_inputcontainer_style: {
+    backgroundColor: "#eeeef0",
+    borderRadius: 15
   }
 
 });

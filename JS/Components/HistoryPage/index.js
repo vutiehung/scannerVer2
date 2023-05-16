@@ -6,21 +6,30 @@ import { DecodeQR, GetIcon, GetText, GetTextToHistory } from '../../Utility'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import QRCodePage from '../QRCodePage/index';
 import GlobalCSS from '../../CSS/GlobalCSS';
+import { AdmobBanner } from '../../../LIB/RNAdmob';
+import GlobalValue from '../../Assets/GlobalValue';
 const HistoryPage = ({ navigaton }) => {
 
     const [scanValue, set_scanValue] = useState([]);
-    const Item = ({ title, navigation }) => {
+    const Item = ({ title, navigation,index }) => {
         return (
-            <ListItem bottomDivider onPress={() => {
-                navigation.navigate('QRCode', { data: title });
-            }}>
-                <View style={styles.Icon}>
-                    <Icon name={GetIcon(DecodeQR(title))} type='ionicon' size={20} color={'#fff'} />
-                </View>
-                <ListItem.Content>
-                    <ListItem.Subtitle>{GetTextToHistory(title)}</ListItem.Subtitle>
-                </ListItem.Content>
-            </ListItem>
+            <>
+                {index%10==5?
+                <AdmobBanner adUnitID={GlobalValue.admob_banner_History}  onAdLoaded={(event)=>{console.log(event.Status)}} height={60}  size={"FULL_BANNER"}  onAdFailedToLoad={(event)=>{console.log(event.messenge)}}></AdmobBanner>
+                :
+                <></>
+                }
+                <ListItem bottomDivider onPress={() => {
+                    navigation.navigate('QRCode', { data: title });
+                }}>
+                    <View style={styles.Icon}>
+                        <Icon name={GetIcon(DecodeQR(title))} type='ionicon' size={20} color={'#fff'} />
+                    </View>
+                    <ListItem.Content>
+                        <ListItem.Subtitle>{GetTextToHistory(title)}</ListItem.Subtitle>
+                    </ListItem.Content>
+                </ListItem>
+            </>
         )
     };
     const Historylist = ({ navigation }) => {
@@ -48,7 +57,7 @@ const HistoryPage = ({ navigaton }) => {
                 />
                 <FlatList
                     data={filterData()}
-                    renderItem={({ item }) => <Item title={item.data} navigation={navigation} />}
+                    renderItem={({ item,index }) => <Item title={item.data} navigation={navigation} index={index} />}
                     keyExtractor={
                         (item, index) => (index)
 

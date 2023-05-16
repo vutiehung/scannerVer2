@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import { Input, Icon, Button, CheckBox } from '@rneui/themed';
 import { GlobalContext } from '../../GlobalContext';
@@ -14,7 +14,7 @@ import EventInputForm from '../SupportComponent/QREventCreator';
 
 
 const CreateQR = ({ navigation }) => {
-    const { config, saveData, data_his
+    const { config, saveData, data_his,interView
     } = useContext(GlobalContext);
     const [QRtype, setQrtype] = useState('EVENT');
     const [open, setOpen] = useState(false);
@@ -30,6 +30,12 @@ const CreateQR = ({ navigation }) => {
         if (config.saveCreate)
             saveData(x)
     }
+    
+    useEffect(() => {
+        interView.Load((parm) => {  interView.Show(); }) 
+    }, []
+    )
+
     return (
         <View style={styles.container}>
             <View style={styles.content} >

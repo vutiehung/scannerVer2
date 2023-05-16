@@ -10,7 +10,9 @@ import ShareContactTab from '../ShareContact/ShareContactTab';
 import TabCreateQR from '../QRCodePage/TabCreateQR';
 import ConfigPage from '../ConfigPage';
 import GlobalCSS from '../../CSS/GlobalCSS';
+import GlobalValue from '../../Assets/GlobalValue';
 const Tab = createBottomTabNavigator();
+import { AdmobBanner,InterstitialView } from 'rnadmob';
 function EmptyScreen() {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -19,7 +21,7 @@ function EmptyScreen() {
     );
 }
 const TabPage = () => {
-    return (
+    return (<>
         <NavigationContainer>
             <Tab.Navigator initialRouteName="Scanner" screenOptions={{ tabBarInactiveTintColor: 'gray', tabBarActiveTintColor: GlobalCSS.Main_Color, }} >
                 <Tab.Screen name="QRcode" component={TabCreateQR} options={{ headerShown: false, tabBarIcon: ({ focused }) => (<Icon name='qrcode' type='font-awesome' color={focused ? GlobalCSS.Main_Color : 'gray'} />) }} />
@@ -45,6 +47,8 @@ const TabPage = () => {
                 }} />
             </Tab.Navigator>
         </NavigationContainer>
+        <AdmobBanner adUnitID={GlobalValue.admob_banner_footer_UID}  onAdLoaded={(event)=>{console.log(event.Status)}} height={50}  size={"FULL_BANNER"}  onAdFailedToLoad={(event)=>{console.log(event.messenge)}}></AdmobBanner>
+        </>
     );
 }
 export default TabPage;
